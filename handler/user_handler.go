@@ -42,6 +42,15 @@ func (uh *userHandlerImpl) UserLogin(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(errBindJson.Status(), errBindJson)
 		return
 	}
+
+	response, err := uh.us.LoginUser(loginRequest)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }
 
 // UserRegister implements UserHandler.
@@ -63,6 +72,15 @@ func (uh *userHandlerImpl) UserRegister(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(errBindJson.Status(), errBindJson)
 		return
 	}
+
+	response, err := uh.us.RegisterUser(registeRequest)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }
 
 // UserTopUp implements UserHandler.
@@ -87,5 +105,13 @@ func (uh *userHandlerImpl) UserTopUp(ctx *gin.Context) {
 	}
 
 	user := ctx.MustGet("userData").(entity.User)
-	_ = user.Id
+
+	response, err := uh.us.TopUpBalance(user.Id, topupRequest)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }
