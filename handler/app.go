@@ -15,8 +15,23 @@ import (
 	"toko-belanja-app/service/transaction_history_service"
 	"toko-belanja-app/service/user_service"
 
+	_ "toko-belanja-app/docs"
+
 	"github.com/gin-gonic/gin"
+	
+	swaggoFile "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+// @title Toko Belanja
+// @version 1.0
+// description Final Project 4 Kampus Merdeka
+
+// @contact.name GLNG-KS07 - Group 5
+// @contact.url https://github.com/yusrililhm/final-project-4-toko-belanja
+
+// @host localhost:8080
+// @BasePath /
 
 func StartApplication() {
 
@@ -49,6 +64,10 @@ func StartApplication() {
 
 	app := gin.Default()
 
+	// swagger
+	app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggoFile.Handler))
+
+	// routing
 	users := app.Group("users")
 
 	{

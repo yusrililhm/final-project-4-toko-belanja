@@ -2,6 +2,7 @@ package handler
 
 import (
 	"toko-belanja-app/dto"
+	"toko-belanja-app/entity"
 	"toko-belanja-app/pkg/errs"
 	"toko-belanja-app/service/user_service"
 
@@ -50,7 +51,7 @@ func (uh *userHandlerImpl) UserLogin(ctx *gin.Context) {
 // @Tags Users
 // @Accept json
 // @Produce json
-// @Param dto.CreateNewUserRequest body dto.CreateNewUserRequest true "body request for user register"
+// @Param dto.CreateNewUsersRequest body dto.CreateNewUsersRequest true "body request for user register"
 // @Success 201 {object} dto.UserResponse
 // @Router /users/register [post]
 func (uh *userHandlerImpl) UserRegister(ctx *gin.Context) {
@@ -73,7 +74,7 @@ func (uh *userHandlerImpl) UserRegister(ctx *gin.Context) {
 // @Produce json
 // @Param Bearer header string true "Bearer Token"
 // @Param dto.UsersTopUpRequest body dto.UsersTopUpRequest true "body request for user topup"
-// @Success 200 {object} dto.UsersResponse
+// @Success 200 {object} dto.UserResponse
 // @Router /users/topup [patch]
 func (uh *userHandlerImpl) UserTopUp(ctx *gin.Context) {
 
@@ -84,4 +85,7 @@ func (uh *userHandlerImpl) UserTopUp(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(errBindJson.Status(), errBindJson)
 		return
 	}
+
+	user := ctx.MustGet("userData").(entity.User)
+	_ = user.Id
 }

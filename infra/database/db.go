@@ -118,7 +118,6 @@ func handleRequiredTables() {
 										products(id)
 					)
 		`
-
 	)
 
 	_, err = db.Exec(createTableUsersQuery)
