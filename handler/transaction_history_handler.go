@@ -30,7 +30,7 @@ func NewTransactionHistoryHandler(transactionhistoryService transaction_history_
 // @Tags Transactions
 // @Accept json
 // @Produce json
-// @Param dto.TransactionRequest body dto.TransactionRequest "body request for add transaction"
+// @Param dto.TransactionRequest body dto.TransactionRequest true "body request for add transaction"
 // @Param Bearer header string true "Bearer Token"
 // @Success 201 {object} dto.TransactionHistoryResponse
 // @Router /transactions [post]
