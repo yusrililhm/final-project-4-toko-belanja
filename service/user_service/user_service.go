@@ -52,4 +52,37 @@ func (us *userServiceImpl) RegisterUser(userPayLoad *dto.CreateNewUsersRequest) 
 	}, nil
 }
 
+func (us *userServiceImpl) LoginUser(userPayLoad *dto.UsersLoginRequest) (*dto.UserResponse, errs.Error) {
+	err := helpers.ValidateStruct(userPayLoad)
+
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := us.ur.GetUserByEmail(userPayLoad.Email)
+
+	if err != nil {
+		if err.Status() == http.StatusNotFound {
+			return nil, errs.NewBadRequestError("invalid email/password")
+		}
+		return nil, err
+	}
+
+	isValidPassword := user.ComparePassword(userPayLoad.Password)
+
+	if isValidPassword == false {
+		return nil, errs.NewBadRequestError("invalid email/password")
+	}
+
+	token := user.GenerateToken()
+
+	return &dto.UserResponse{
+		Code:    http.StatusOK,
+		Message: "You have successfully logged into your account",
+		Data: dto.UsersLoginResponse{
+			Token: token,
+		},
+	}, nil
+}
+
 
