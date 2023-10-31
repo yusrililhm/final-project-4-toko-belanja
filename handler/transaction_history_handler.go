@@ -31,7 +31,7 @@ func NewTransactionHistoryHandler(transactionhistoryService transaction_history_
 // @Accept json
 // @Produce json
 // @Param dto.TransactionRequest body dto.TransactionRequest true "body request for add transaction"
-// @Param Bearer header string true "Bearer Token"
+// @Param Authorization header string true "Bearer Token"
 // @Success 201 {object} dto.TransactionHistoryResponse
 // @Router /transactions [post]
 func (th *transactionHistoryHandlerImpl) AddTransaction(ctx *gin.Context) {
@@ -55,7 +55,7 @@ func (th *transactionHistoryHandlerImpl) AddTransaction(ctx *gin.Context) {
 // @Tags Transactions
 // @Accept json
 // @Produce json
-// @Param Bearer header string true "Bearer Token"
+// @Param Authorization header string true "Bearer Token"
 // @Success 200 {object} dto.TransactionHistoryResponse
 // @Router /transactions/my-transactions [get]
 func (th *transactionHistoryHandlerImpl) GetMyTransaction(ctx *gin.Context) {
@@ -69,7 +69,7 @@ func (th *transactionHistoryHandlerImpl) GetMyTransaction(ctx *gin.Context) {
 // @Tags Transactions
 // @Accept json
 // @Produce json
-// @Param Bearer header string true "Bearer Token"
+// @Param Authorization header string true "Bearer Token"
 // @Success 200 {object} dto.TransactionHistoryResponse
 // @Router /transactions/user-transactions [get]
 func (th *transactionHistoryHandlerImpl) GetUsersTransaction(ctx *gin.Context) {

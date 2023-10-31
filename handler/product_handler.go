@@ -31,7 +31,7 @@ func NewProductHandler(productService product_service.ProductService) ProductHan
 // @Tags Products
 // @Accept json
 // @Produce json
-// @Param Bearer header string true "Bearer Token"
+// @Param Authorization header string true "Bearer Token"
 // @Param dto.ProductRequest body dto.ProductRequest true "body request for add product"
 // @Success 201 {object} dto.ProductResponse
 // @Router /products [post]
@@ -53,7 +53,7 @@ func (ph *productHandlerImpl) AddProduct(ctx *gin.Context) {
 // @Tags Products
 // @Accept json
 // @Produce json
-// @Param Bearer header string true "Bearer Token"
+// @Param Authorization header string true "Bearer Token"
 // @Param ProductId path int true "Product Id"
 // @Success 200 {object} dto.ProductResponse
 // @Router /products/{productId} [delete]
@@ -69,7 +69,7 @@ func (ph *productHandlerImpl) DeleteProduct(ctx *gin.Context) {
 // @Tags Products
 // @Accept json
 // @Produce json
-// @Param Bearer header string true "Bearer Token"
+// @Param Authorization header string true "Bearer Token"
 // @Success 200 {object} dto.ProductResponse
 // @Router /products [get]
 func (ph *productHandlerImpl) GetProducts(ctx *gin.Context) {
@@ -83,7 +83,7 @@ func (ph *productHandlerImpl) GetProducts(ctx *gin.Context) {
 // @Tags Products
 // @Accept json
 // @Produce json
-// @Param Bearer header string true "Bearer Token"
+// @Param Authorization header string true "Bearer Token"
 // @Param ProductId path int true "Product Id"
 // @Param dto.ProductRequest body dto.ProductRequest true "body request for update product"
 // @Success 200 {object} dto.ProductResponse

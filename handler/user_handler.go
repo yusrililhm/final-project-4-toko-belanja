@@ -90,7 +90,7 @@ func (uh *userHandlerImpl) UserRegister(ctx *gin.Context) {
 // @Tags Users
 // @Accept json
 // @Produce json
-// @Param Bearer header string true "Bearer Token"
+// @Param Authorization header string true "Bearer Token"
 // @Param dto.UsersTopUpRequest body dto.UsersTopUpRequest true "body request for user topup"
 // @Success 200 {object} dto.UserResponse
 // @Router /users/topup [patch]
