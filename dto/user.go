@@ -26,6 +26,7 @@ type UsersTopUpRequest struct {
 	Balance uint `json:"balance" valid:"required~ Balance can't be empty, range(0|100000000)~ Balance can't be less than 0 or more than 100,000,000" example:"150000"`
 }
 
+
 type UsersLoginResponse struct {
 	Token   string `json:"token"`
 }

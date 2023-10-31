@@ -1,10 +1,10 @@
 package database
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
-	"database/sql"
-	
+
 	"toko-belanja-app/infra/config"
 
 	_ "github.com/lib/pq"
