@@ -93,14 +93,14 @@ func (u *userPg) CreateNewUser(userPayLoad *entity.User) (*dto.CreateNewUsersRes
 		tx.Rollback()
 		return nil, errs.NewInternalServerError("something went wrong")
 	}
-	
+
 	return &user, nil
 }
 
 // Top Up
 func (u *userPg) TopUpBalance(userPayLoad *entity.User) (*dto.TopUpResponse, errs.Error) {
 	tx, err := u.db.Begin()
-	
+
 	if err != nil {
 		tx.Rollback()
 		return nil, errs.NewInternalServerError("something went wrong")
@@ -121,9 +121,8 @@ func (u *userPg) TopUpBalance(userPayLoad *entity.User) (*dto.TopUpResponse, err
 		tx.Rollback()
 		return nil, errs.NewInternalServerError("something went wrong")
 	}
-	
-	return &topUp, nil
 
+	return &topUp, nil
 
 }
 
