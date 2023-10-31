@@ -78,7 +78,7 @@ func (u *userPg) CreateNewUser(userPayLoad *entity.User) (*dto.CreateNewUsersRes
 	}
 
 	var user dto.CreateNewUsersResponse
-	row := tx.QueryRow(createNewUser, userPayLoad.FullName, userPayLoad.Email, userPayLoad.Password, userPayLoad.Balance)
+	row := tx.QueryRow(createNewUser, userPayLoad.FullName, userPayLoad.Email, userPayLoad.Password)
 
 	err = row.Scan(&user.Id, &user.FullName, &user.Email, &user.Password, &user.Balance, &user.CreatedAt)
 
