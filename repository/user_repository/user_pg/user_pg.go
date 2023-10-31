@@ -27,6 +27,8 @@ const (
 		UPDATE "users"
 		SET balance = balance + $2
 		WHERE id = $1
+		RETURNING
+			balance
 	`
 
 	getUserById = `
@@ -96,29 +98,33 @@ func (u *userPg) CreateNewUser(userPayLoad *entity.User) (*dto.CreateNewUsersRes
 }
 
 // Top Up
-func (u *userPg) TopUpBalance(userPayLoad *entity.User) errs.Error {
+func (u *userPg) TopUpBalance(userPayLoad *entity.User) (*dto.TopUpResponse, errs.Error) {
 	tx, err := u.db.Begin()
-
+	
 	if err != nil {
 		tx.Rollback()
-		return errs.NewInternalServerError("something went wrong")
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
-	_, err = tx.Exec(UsersTopUp, &userPayLoad.Id, &userPayLoad.Balance)
+	var topUp dto.TopUpResponse
+	row := tx.QueryRow(UsersTopUp, userPayLoad.Id, userPayLoad.Balance)
+	err = row.Scan(&topUp.Balance)
 
 	if err != nil {
 		tx.Rollback()
-		return errs.NewInternalServerError("something went wrong")
+		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
 	}
 
 	err = tx.Commit()
 
 	if err != nil {
 		tx.Rollback()
-		return errs.NewInternalServerError("something went wrong")
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
+	
+	return &topUp, nil
 
-	return nil
+
 }
 
 func (u *userPg) GetUserById(userId int) (*entity.User, errs.Error) {

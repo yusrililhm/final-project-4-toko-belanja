@@ -31,6 +31,11 @@ type UsersLoginResponse struct {
 	Token   string `json:"token"`
 }
 
+type TopUpResponse struct {
+	Balance uint `json:"balance"`
+}
+
+
 type UserResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
