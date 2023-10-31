@@ -173,3 +173,38 @@ func (c *categoryPg) UpdateCategory(categoryPayLoad *entity.Category) (*dto.Upda
 
 	return &categoryUpdate, nil
 }
+
+func (c *categoryPg) CheckCategoryId(categoryId int) (*entity.Category, errs.Error) {
+	category := entity.Category{}
+	row := c.db.QueryRow(checkCategoryId, categoryId)
+	err := row.Scan(&category.Id)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, errs.NewInternalServerError("rows not found" + err.Error())
+		}
+		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+	}
+
+	return &category, nil
+}
+
+func (c *categoryPg) DeleteCategory(categoryId int) errs.Error {
+	tx, _ := c.db.Begin()
+
+	_, err := tx.Exec(deleteCategoryById, categoryId)
+
+	if err != nil {
+		tx.Rollback()
+		return errs.NewInternalServerError("something went wrong")
+	}
+
+	err = tx.Commit()
+
+	if err != nil {
+		tx.Rollback()
+		return errs.NewInternalServerError("something went wrong")
+	}
+
+	return nil
+}
