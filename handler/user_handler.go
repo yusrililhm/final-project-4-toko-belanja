@@ -2,6 +2,7 @@ package handler
 
 import (
 	"toko-belanja-app/dto"
+	"toko-belanja-app/entity"
 	"toko-belanja-app/pkg/errs"
 	"toko-belanja-app/service/user_service"
 
@@ -84,4 +85,7 @@ func (uh *userHandlerImpl) UserTopUp(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(errBindJson.Status(), errBindJson)
 		return
 	}
+
+	user := ctx.MustGet("userData").(entity.User)
+	_ = user.Id
 }
