@@ -22,7 +22,14 @@ const (
 		RETURNING
 			id, full_name, email, password, balance, created_at;
 	`
+	UsersTopUp = `
+		UPDATE "users"
+		SET balance = balance + $2
+		WHERE id = $1
+	`
 	)
+
+	
 
 type userPg struct {
 	db *sql.DB
@@ -59,3 +66,33 @@ func (u *userPg) CreateNewUser(userPayLoad *entity.User) (*dto.CreateNewUsersRes
 	}
 	return &user, nil
 }
+
+
+// Top Up
+func (u *userPg) TopUpBalance(userPayLoad *entity.User) (*dto.UsersTopUpRequest, errs.Error) {
+    tx, err := u.db.Begin()
+
+    if err != nil {
+        tx.Rollback()
+        return nil, errs.NewInternalServerError("something went wrong")
+    }
+
+    var user dto.UsersTopUpRequest
+    row := tx.QueryRow(UsersTopUp, userPayLoad.Id, userPayLoad.Balance)
+
+    err = row.Scan(&user.Balance)
+
+    if err != nil {
+        tx.Rollback()
+        return nil, errs.NewInternalServerError("something went wrong")
+    }
+
+    err = tx.Commit()
+
+    if err != nil {
+        tx.Rollback()
+        return nil, errs.NewInternalServerError("something went wrong")
+    }
+    return &user, nil
+}
+
