@@ -8,7 +8,7 @@ import (
 
 type UserRepository interface {
 	CreateNewUser(userPayLoad *entity.User) (*dto.CreateNewUsersResponse, errs.Error)
-	TopUpBalance(userPayLoad *entity.User) (errs.Error)
+	TopUpBalance(userPayLoad *entity.User) (*dto.TopUpResponse, errs.Error)
 	GetUserByEmail(userEmail string) (*entity.User, errs.Error)
 	GetUserById(userId int) (*entity.User, errs.Error) 
 }
