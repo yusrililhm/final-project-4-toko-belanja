@@ -426,7 +426,7 @@ paths:
       parameters:
       - description: Bearer Token
         in: header
-        name: Bearer
+        name: Authorization
         required: true
         type: string
       - description: body request for user topup
