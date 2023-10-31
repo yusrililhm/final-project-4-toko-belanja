@@ -85,4 +85,42 @@ func (us *userServiceImpl) LoginUser(userPayLoad *dto.UsersLoginRequest) (*dto.U
 	}, nil
 }
 
+func (us *userServiceImpl) TopUpBalance(userId int, userPayLoad *dto.UsersTopUpRequest) (*dto.UserResponse, errs.Error) {
+	err := helpers.ValidateStruct(userPayLoad)
 
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := us.ur.GetUserById(userId)
+
+	if err != nil {
+		if err.Status() == http.StatusNotFound {
+			return nil, errs.NewBadRequestError("invalid user")
+		}
+		return nil, err
+	}
+
+	if user.Id != userId {
+		return nil, errs.NewNotFoundError("invalid user")
+	}
+
+	usr := &entity.User{
+		Id:      userId,
+		Balance: userPayLoad.Balance,
+	}
+
+	err = us.ur.TopUpBalance(usr)
+
+	if err != nil {
+		return nil, err
+	}
+
+	balance := strconv.Itoa(int(userPayLoad.Balance))
+
+	return &dto.UserResponse{
+		Code:    http.StatusOK,
+		Message: "Your balance has been successfully updated to Rp." + balance,
+		Data: nil,
+	}, nil
+}
