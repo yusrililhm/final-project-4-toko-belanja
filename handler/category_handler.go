@@ -32,7 +32,7 @@ func NewCategoryHandler(categoryService category_service.CategoryService) Catego
 // @Accept json
 // @Produce json
 // @Param Bearer header string true "Bearer Token"
-// @Param dto.CatgoriesRequest body dto.CatgoriesRequest true "body request for add category"
+// @Param dto.CategoriesRequest body dto.CategoriesRequest true "body request for add category"
 // @Success 201 {object} dto.CategoryResponse
 // @Router /categories [post]
 func (ch *categoryHandlerImpl) AddCategory(ctx *gin.Context) {
@@ -85,7 +85,7 @@ func (ch *categoryHandlerImpl) GetCategories(ctx *gin.Context) {
 // @Produce json
 // @Param Bearer header string true "Bearer Token"
 // @Param CategoryId path int true "Category Id path"
-// @Param dto.CatgoriesRequest body dto.CatgoriesRequest true "body request for update category"
+// @Param dto.CategoriesRequest body dto.CategoriesRequest true "body request for update category"
 // @Success 200 {object} dto.CategoryResponse
 // @Router /categories/{categoryId} [patch]
 func (ch *categoryHandlerImpl) UpdateCategory(ctx *gin.Context) {
