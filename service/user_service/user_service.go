@@ -3,7 +3,6 @@ package user_service
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 	"toko-belanja-app/dto"
 	"toko-belanja-app/entity"
 	"toko-belanja-app/pkg/errs"
@@ -111,13 +110,13 @@ func (us *userServiceImpl) TopUpBalance(userId int, userPayLoad *dto.UsersTopUpR
 		Balance: userPayLoad.Balance,
 	}
 
-	err = us.ur.TopUpBalance(usr)
+	response, err := us.ur.TopUpBalance(usr)
 
 	if err != nil {
 		return nil, err
 	}
 
-	balance := fmt.Sprintf("Your balance has been successfully updated to Rp%s\n", strconv.Itoa(int(userPayLoad.Balance)))
+	balance := fmt.Sprintf("Your balance has been successfully updated to Rp%d\n", response.Balance)
 
 	return &dto.UserResponse{
 		Code:    http.StatusOK,
