@@ -1,0 +1,448 @@
+basePath: /
+definitions:
+  dto.CategoriesRequest:
+    properties:
+      type:
+        example: jersey
+        type: string
+    type: object
+  dto.CategoryResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+  dto.CreateNewUsersRequest:
+    properties:
+      email:
+        example: maguire.harry@mufc.com
+        type: string
+      full_name:
+        example: Harry Maguire
+        type: string
+      password:
+        example: secret
+        type: string
+    type: object
+  dto.ProductRequest:
+    properties:
+      category_id:
+        example: 1
+        type: integer
+      price:
+        example: 120000
+        type: integer
+      stock:
+        example: 10
+        type: integer
+      title:
+        example: Jersey King MU 2023/2024
+        type: string
+    type: object
+  dto.ProductResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+  dto.TransactionHistoryResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+  dto.TransactionRequest:
+    properties:
+      product_id:
+        example: 1
+        type: integer
+      quantity:
+        example: 3
+        type: integer
+    type: object
+  dto.UserResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+  dto.UsersLoginRequest:
+    properties:
+      email:
+        example: maguire.harry@mufc.com
+        type: string
+      password:
+        example: secret
+        type: string
+    type: object
+  dto.UsersTopUpRequest:
+    properties:
+      balance:
+        example: 150000
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: GLNG-KS07 - Group 5
+    url: https://github.com/yusrililhm/final-project-4-toko-belanja
+  title: Toko Belanja
+  version: "1.0"
+paths:
+  /categories:
+    get:
+      consumes:
+      - application/json
+      description: Get categories
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Bearer
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CategoryResponse'
+      summary: Get categories
+      tags:
+      - Categories
+    post:
+      consumes:
+      - application/json
+      description: Add category
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Bearer
+        required: true
+        type: string
+      - description: body request for add category
+        in: body
+        name: dto.CategoriesRequest
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CategoriesRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.CategoryResponse'
+      summary: Add category
+      tags:
+      - Categories
+  /categories/{categoryId}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete category
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Bearer
+        required: true
+        type: string
+      - description: Category Id
+        in: path
+        name: CategoryId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CategoryResponse'
+      summary: Delete category
+      tags:
+      - Categories
+    patch:
+      consumes:
+      - application/json
+      description: Update category
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Bearer
+        required: true
+        type: string
+      - description: Category Id path
+        in: path
+        name: CategoryId
+        required: true
+        type: integer
+      - description: body request for update category
+        in: body
+        name: dto.CategoriesRequest
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CategoriesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CategoryResponse'
+      summary: Update category
+      tags:
+      - Categories
+  /products:
+    get:
+      consumes:
+      - application/json
+      description: Get products
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Bearer
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ProductResponse'
+      summary: Get products
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      description: Add product
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Bearer
+        required: true
+        type: string
+      - description: body request for add product
+        in: body
+        name: dto.ProductRequest
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.ProductResponse'
+      summary: Add product
+      tags:
+      - Products
+  /products/{productId}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete product
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Bearer
+        required: true
+        type: string
+      - description: Product Id
+        in: path
+        name: ProductId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ProductResponse'
+      summary: Delete product
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      description: Update product
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Bearer
+        required: true
+        type: string
+      - description: Product Id
+        in: path
+        name: ProductId
+        required: true
+        type: integer
+      - description: body request for update product
+        in: body
+        name: dto.ProductRequest
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ProductResponse'
+      summary: Update product
+      tags:
+      - Products
+  /transactions:
+    post:
+      consumes:
+      - application/json
+      description: Add transaction
+      parameters:
+      - description: body request for add transaction
+        in: body
+        name: dto.TransactionRequest
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TransactionRequest'
+      - description: Bearer Token
+        in: header
+        name: Bearer
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.TransactionHistoryResponse'
+      summary: Add transaction
+      tags:
+      - Transactions
+  /transactions/my-transactions:
+    get:
+      consumes:
+      - application/json
+      description: Get my transaction
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Bearer
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TransactionHistoryResponse'
+      summary: Get my transaction
+      tags:
+      - Transactions
+  /transactions/user-transactions:
+    get:
+      consumes:
+      - application/json
+      description: Get user transaction
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Bearer
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TransactionHistoryResponse'
+      summary: Get user transaction
+      tags:
+      - Transactions
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: User login
+      parameters:
+      - description: body request for user login
+        in: body
+        name: dto.UsersLoginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UsersLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserResponse'
+      summary: User login
+      tags:
+      - Users
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: User register
+      parameters:
+      - description: body request for user register
+        in: body
+        name: dto.CreateNewUsersRequest
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateNewUsersRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.UserResponse'
+      summary: User register
+      tags:
+      - Users
+  /users/topup:
+    patch:
+      consumes:
+      - application/json
+      description: User topup
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Bearer
+        required: true
+        type: string
+      - description: body request for user topup
+        in: body
+        name: dto.UsersTopUpRequest
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UsersTopUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserResponse'
+      summary: User topup
+      tags:
+      - Users
+swagger: "2.0"
