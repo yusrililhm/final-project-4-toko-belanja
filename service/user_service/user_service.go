@@ -1,6 +1,7 @@
 package user_service
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"toko-belanja-app/dto"
@@ -116,11 +117,11 @@ func (us *userServiceImpl) TopUpBalance(userId int, userPayLoad *dto.UsersTopUpR
 		return nil, err
 	}
 
-	balance := strconv.Itoa(int(userPayLoad.Balance))
+	balance := fmt.Sprintf("Your balance has been successfully updated to Rp%s\n", strconv.Itoa(int(userPayLoad.Balance)))
 
 	return &dto.UserResponse{
 		Code:    http.StatusOK,
-		Message: "Your balance has been successfully updated to Rp." + balance,
-		Data: nil,
+		Message: balance,
+		Data:    nil,
 	}, nil
 }
