@@ -99,10 +99,10 @@ func handleRequiredTables() {
 				transaction_histories
 					(
 						id SERIAL PRIMARY KEY,
-						user_id,
-						product_id,
-						quantity,
-						total_price,
+						user_id INT NOT NULL,
+						product_id INT NOT NULL,
+						quantity INT NOT NULL,
+						total_price INT NOT NULL,
 						created_at TIMESTAMPTZ DEFAULT now(),
 						updated_at TIMESTAMPTZ DEFAULT now(),
 						deleted_at TIMESTAMPTZ,
