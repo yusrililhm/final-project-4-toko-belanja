@@ -27,7 +27,11 @@ type UsersTopUpRequest struct {
 }
 
 type UsersLoginResponse struct {
-	Token   string `json:"token"`
+	Token string `json:"token"`
+}
+
+type TopUpResponse struct {
+	Balance uint `json:"balance"`
 }
 
 type UserResponse struct {

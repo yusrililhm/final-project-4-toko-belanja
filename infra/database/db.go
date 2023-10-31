@@ -1,10 +1,10 @@
 package database
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
-	"database/sql"
-	
+
 	"toko-belanja-app/infra/config"
 
 	_ "github.com/lib/pq"
@@ -118,7 +118,6 @@ func handleRequiredTables() {
 										products(id)
 					)
 		`
-
 	)
 
 	_, err = db.Exec(createTableUsersQuery)
