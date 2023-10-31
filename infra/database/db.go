@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 
-	"toko-belanja-app/entity"
 	"toko-belanja-app/infra/config"
 
 	_ "github.com/lib/pq"
@@ -119,21 +118,6 @@ func handleRequiredTables() {
 										products(id)
 					)
 		`
-
-		createAdminQuery = `
-			INSERT INTO 
-				users (
-					full_name, 
-					email, 
-					password, 
-					role, 
-					balance
-				) 
-			VALUES 
-				($1, $2, $3, 'admin', 0) 
-			ON CONFLICT(email) 
-			DO NOTHING
-		`
 	)
 
 	_, err = db.Exec(createTableUsersQuery)
@@ -161,21 +145,6 @@ func handleRequiredTables() {
 
 	if err != nil {
 		log.Panic("error while create table transaction_histories: ", err.Error())
-		return
-	}
-
-	user := &entity.User{
-		FullName: config.AppConfig().AdminFullName,
-		Email:    config.AppConfig().AdminEmail,
-		Password: config.AppConfig().AdminPassword,
-	}
-
-	user.HashPassword()
-
-	_, err = db.Exec(createAdminQuery, user.FullName, user.Email, user.Password)
-
-	if err != nil {
-		log.Panic("error while create admin: ", err.Error())
 		return
 	}
 }
