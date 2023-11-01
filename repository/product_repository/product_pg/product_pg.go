@@ -31,17 +31,25 @@ const (
 			p.created_at
 		FROM
 			products AS p
+		WHERE
+			p.deleted_at IS NULL
 		ORDER BY
 			p.id ASC
 	`
 
 	getProductById = `
 		SELECT 
-			p.id
+			p.id,
+			p.title,
+			p.price,
+			p.stock,
+			p.category_id,
+			p.created_at
 		FROM 
 			products AS p
 		WHERE 
 			p.id = $1
+			AND p.deleted_at IS NULL
 	`
 
 	updateProductById = `
