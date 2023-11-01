@@ -76,8 +76,8 @@ func NewProductPg(db *sql.DB) product_repository.ProductRepository {
 	return &productPg{db: db}
 }
 
-func (t *productPg) CreateNewProduct(productPayLoad *entity.Product) (*dto.NewProductResponse, errs.Error) {
-	tx, err := t.db.Begin()
+func (p *productPg) CreateNewProduct(productPayLoad *entity.Product) (*dto.NewProductResponse, errs.Error) {
+	tx, err := p.db.Begin()
 
 	if err != nil {
 		tx.Rollback()
@@ -114,4 +114,36 @@ func (t *productPg) CreateNewProduct(productPayLoad *entity.Product) (*dto.NewPr
 	}
 
 	return &product, nil
+}
+
+func (p *productPg) GetAllProducts() ([]entity.Product, errs.Error) {
+	rows, err := p.db.Query(getProduct)
+	if err != nil {
+		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+	}
+	defer rows.Close()
+
+	var products []entity.Product
+
+	for rows.Next() {
+		var product entity.Product
+		err := rows.Scan(
+			&product.Id,
+			&product.Title,
+			&product.Price,
+			&product.Stock,
+			&product.CategoryId,
+			&product.CreatedAt,
+		)
+		if err != nil {
+			return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		}
+		products = append(products, product)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+	}
+
+	return products, nil
 }

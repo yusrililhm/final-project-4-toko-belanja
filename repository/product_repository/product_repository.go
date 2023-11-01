@@ -8,4 +8,5 @@ import (
 
 type ProductRepository interface {
 	CreateNewProduct(productPayLoad *entity.Product) (*dto.NewProductResponse, errs.Error)
+	GetAllProducts() ([]entity.Product, errs.Error)
 }
