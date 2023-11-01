@@ -10,7 +10,7 @@ import (
 
 type AuthService interface {
 	Authentication() gin.HandlerFunc
-	Authorization() gin.HandlerFunc
+	AdminAuthorization() gin.HandlerFunc
 }
 
 type authServiceImpl struct {
@@ -51,8 +51,20 @@ func (a *authServiceImpl) Authentication() gin.HandlerFunc {
 }
 
 // Authorization implements AuthService.
-func (a *authServiceImpl) Authorization() gin.HandlerFunc {
+func (a *authServiceImpl) AdminAuthorization() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		// auth logic here
+		userData, ok := ctx.MustGet("userData").(entity.User)
+		if !ok {
+			newError := errs.NewBadRequestError("Failed to get user data")
+			ctx.AbortWithStatusJSON(newError.Status(), newError)
+			return
+		}
+		if userData.Role != "admin" {
+			newError := errs.NewUnathorizedError("You're not authorized to access this endpoint")
+			ctx.AbortWithStatusJSON(newError.Status(), newError)
+			return
+		}
+
+		ctx.Next()
 	}
 }
