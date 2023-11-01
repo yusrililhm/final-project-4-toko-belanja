@@ -31,39 +31,44 @@ const (
 			id, type, sold_product_amount, updated_at
 	`
 	getCategoryWithProduct = `
-		SELECT
+			SELECT
 			c.id,
 			c.type,
 			c.sold_product_amount,
 			c.created_at,
-			c.update_at,
+			c.updated_at,
 			p.id,
 			p.title,
 			p.price,
 			p.stock,
 			p.created_at,
-			p.update_at
+			p.updated_at
 		FROM
-			categories c
+			categories as c
 		LEFT JOIN
 			products as p 
 		ON 
 			c.id = p.id
+		WHERE
+			c.deleted_at IS NULL
 		ORDER BY
-			c.id
-		ASC
+			c.id ASC
 	`
+
 	deleteCategoryById = `
-		DELETE
-		FROM
+		UPDATE
 			categories
+		SET
+			deleted_at = now()
 		WHERE
 			id = $1
 	`
 
 	checkCategoryId = `
 		SELECT 
-			c.id 
+			c.id,
+			c.type,
+			c.sold_product_amount,
 		FROM 
 			categories AS c
 		WHERE
