@@ -69,7 +69,7 @@ func (ch *categoryHandlerImpl) AddCategory(ctx *gin.Context) {
 func (ch *categoryHandlerImpl) DeleteCategory(ctx *gin.Context) {
 	categoryId, _ := strconv.Atoi(ctx.Param("categoryId"))
 
-	response, err := ch.cs.Delete(categoryId)
+	response, err := ch.cs.DeleteCategory(categoryId)
 
 	if err != nil {
 		ctx.AbortWithStatusJSON(err.Status(), err)
