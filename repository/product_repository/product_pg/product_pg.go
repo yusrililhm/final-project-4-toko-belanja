@@ -31,17 +31,25 @@ const (
 			p.created_at
 		FROM
 			products AS p
+		WHERE
+			p.deleted_at IS NULL
 		ORDER BY
 			p.id ASC
 	`
 
 	getProductById = `
 		SELECT 
-			p.id
+			p.id,
+			p.title,
+			p.price,
+			p.stock,
+			p.category_id,
+			p.created_at
 		FROM 
 			products AS p
 		WHERE 
 			p.id = $1
+			AND p.deleted_at IS NULL
 	`
 
 	updateProductById = `
@@ -60,9 +68,10 @@ const (
 	`
 
 	deleteProductById = `
-		DELETE
-		FROM
+		UPDATE
 			products
+		SET
+			deleted_at = now()
 		WHERE
 			id = $1
 	`
@@ -146,4 +155,26 @@ func (p *productPg) GetAllProducts() ([]entity.Product, errs.Error) {
 	}
 
 	return products, nil
+}
+
+func (p *productPg) GetProductById(id int) (*entity.Product, errs.Error) {
+	var product entity.Product
+
+	err := p.db.QueryRow(getProductById, id).Scan(
+		&product.Id,
+		&product.Title,
+		&product.Price,
+		&product.Stock,
+		&product.CategoryId,
+		&product.CreatedAt,
+	)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, errs.NewNotFoundError("product not found")
+		}
+		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+	}
+
+	return &product, nil
 }

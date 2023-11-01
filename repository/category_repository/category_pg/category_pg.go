@@ -73,6 +73,7 @@ const (
 			categories AS c
 		WHERE
 			c.id = $1
+			AND c.deleted_at IS NULL
 	`
 )
 
