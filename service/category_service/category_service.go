@@ -24,7 +24,7 @@ func NewCategoryService(categoryRepo category_repository.CategoryRepository) Cat
 	return &categoryServiceImpl{cr: categoryRepo}
 }
 
-func (cs *categoryServiceImpl) CreateCategory(categoryPayLoad *dto.CategoriesRequest) (*dto.CategoryResponse, errs.Error){
+func (cs *categoryServiceImpl) CreateCategory(categoryPayLoad *dto.CategoriesRequest) (*dto.CategoryResponse, errs.Error) {
 	err := helpers.ValidateStruct(categoryPayLoad)
 
 	if err != nil {
@@ -36,17 +36,18 @@ func (cs *categoryServiceImpl) CreateCategory(categoryPayLoad *dto.CategoriesReq
 	}
 
 	response, err := cs.cr.CreateCategory(category)
-	
+
 	if err != nil {
 		return nil, err
 	}
 
 	return &dto.CategoryResponse{
-		Code: http.StatusCreated,
+		Code:    http.StatusCreated,
 		Message: "Category has been successfully created",
-		Data: response,
+		Data:    response,
 	}, nil
 }
+
 func (cs *categoryServiceImpl) GetAllCategory() (*dto.CategoryResponse, errs.Error) {
 	response, err := cs.cr.GetCategory()
 
@@ -58,11 +59,12 @@ func (cs *categoryServiceImpl) GetAllCategory() (*dto.CategoryResponse, errs.Err
 	}
 
 	return &dto.CategoryResponse{
-		Code: http.StatusOK,
+		Code:    http.StatusOK,
 		Message: "Category has been successfully fetched",
-		Data: response,
+		Data:    response,
 	}, nil
 }
+
 func (cs *categoryServiceImpl) UpdateCategory(categoryId int, categoryPayLoad *dto.CategoriesRequest) (*dto.CategoryResponse, errs.Error) {
 	err := helpers.ValidateStruct(categoryPayLoad)
 
@@ -70,7 +72,7 @@ func (cs *categoryServiceImpl) UpdateCategory(categoryId int, categoryPayLoad *d
 		return nil, err
 	}
 
-	updateCategory, err := cs.cr.CheckCategoryId(categoryId)
+	checkCategory, err := cs.cr.CheckCategoryId(categoryId)
 
 	if err != nil {
 		if err.Status() == http.StatusNotFound {
@@ -79,7 +81,7 @@ func (cs *categoryServiceImpl) UpdateCategory(categoryId int, categoryPayLoad *d
 		return nil, err
 	}
 
-	if updateCategory.Id != categoryId {
+	if checkCategory.Id != categoryId {
 		return nil, errs.NewNotFoundError("invalid user")
 	}
 
@@ -94,9 +96,29 @@ func (cs *categoryServiceImpl) UpdateCategory(categoryId int, categoryPayLoad *d
 	}
 
 	return &dto.CategoryResponse{
-		Code: http.StatusOK,
+		Code:    http.StatusOK,
 		Message: "Category has been successfully updated",
-		Data: response,
+		Data:    response,
 	}, nil
 }
-func (cs *categoryServiceImpl) DeleteCategory(categoryId int) (*dto.CategoryResponse, errs.Error)
+
+func (cs *categoryServiceImpl) DeleteCategory(categoryId int) (*dto.CategoryResponse, errs.Error) {
+	checkCategory, err := cs.cr.CheckCategoryId(categoryId)
+
+	if err != nil {
+		if err.Status() == http.StatusNotFound {
+			return nil, errs.NewBadRequestError("invalid user")
+		}
+		return nil, err
+	}
+
+	if checkCategory.Id != categoryId {
+		return nil, errs.NewNotFoundError("invalid user")
+	}
+
+	return &dto.CategoryResponse{
+		Code: http.StatusOK,
+		Message: "Category has been successfully deleted",
+		Data: nil,
+	}, nil
+}
