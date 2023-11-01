@@ -47,6 +47,21 @@ func (cs *categoryServiceImpl) CreateCategory(categoryPayLoad *dto.CategoriesReq
 		Data: response,
 	}, nil
 }
-func (cs *categoryServiceImpl) GetAllCategory() (*dto.CategoryResponse, errs.Error)
+func (cs *categoryServiceImpl) GetAllCategory() (*dto.CategoryResponse, errs.Error) {
+	response, err := cs.cr.GetCategory()
+
+	if err != nil {
+		if err.Status() == http.StatusNotFound {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	return &dto.CategoryResponse{
+		Code: http.StatusOK,
+		Message: "Category has been successfully fetched",
+		Data: response,
+	}, nil
+}
 func (cs *categoryServiceImpl) UpdateCategory(categoryId int, categoryPayLoad *dto.CategoriesRequest) (*dto.CategoryResponse, errs.Error)
 func (cs *categoryServiceImpl) DeleteCategory(categoryId int) (*dto.CategoryResponse, errs.Error)
