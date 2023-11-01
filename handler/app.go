@@ -78,27 +78,27 @@ func StartApplication() {
 	products := app.Group("products")
 
 	{
-		products.POST("", productHandler.AddProduct)
-		products.GET("", productHandler.GetProducts)
-		products.PUT("/:productId", productHandler.UpdateProduct)
-		products.DELETE("/:productId", productHandler.DeleteProduct)
+		products.POST("", authService.Authentication(), authService.AdminAuthorization(), productHandler.AddProduct)
+		products.GET("", authService.Authentication(), productHandler.GetProducts)
+		products.PUT("/:productId", authService.Authentication(), authService.AdminAuthorization(), productHandler.UpdateProduct)
+		products.DELETE("/:productId", authService.Authentication(), authService.AdminAuthorization(), productHandler.DeleteProduct)
 	}
 
 	categories := app.Group("categories")
 
 	{
-		categories.POST("", categoryHandler.AddCategory)
-		categories.GET("", categoryHandler.GetCategories)
-		categories.PATCH("/:categoryId", categoryHandler.UpdateCategory)
-		categories.DELETE("/:categoryId", categoryHandler.DeleteCategory)
+		categories.POST("", authService.Authentication(), authService.AdminAuthorization(), categoryHandler.AddCategory)
+		categories.GET("", authService.Authentication(), authService.AdminAuthorization(), categoryHandler.GetCategories)
+		categories.PATCH("/:categoryId", authService.Authentication(), authService.AdminAuthorization(), categoryHandler.UpdateCategory)
+		categories.DELETE("/:categoryId", authService.Authentication(), authService.AdminAuthorization(), categoryHandler.DeleteCategory)
 	}
 
 	transactionHistories := app.Group("transactions")
 
 	{
-		transactionHistories.POST("", transactionHistoryHandler.AddTransaction)
-		transactionHistories.GET("/my-transactions", transactionHistoryHandler.GetMyTransaction)
-		transactionHistories.GET("/user-transactions", transactionHistoryHandler.GetUsersTransaction)
+		transactionHistories.POST("", authService.Authentication(), transactionHistoryHandler.AddTransaction)
+		transactionHistories.GET("/my-transactions", authService.Authentication(), transactionHistoryHandler.GetMyTransaction)
+		transactionHistories.GET("/user-transactions", authService.Authentication(), authService.AdminAuthorization(), transactionHistoryHandler.GetUsersTransaction)
 	}
 
 	app.Run(":" + config.AppConfig().Port)
