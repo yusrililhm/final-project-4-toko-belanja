@@ -59,8 +59,7 @@ func StartApplication() {
 	transactionHistoryService := transaction_history_service.NewTransactionHistoryService(transactionHistoryRepo, productRepo, userRepo)
 	transactionHistoryHandler := NewTransactionHistoryHandler(transactionHistoryService)
 
-	authService := auth_service.NewAuthService()
-	_ = authService
+	authService := auth_service.NewAuthService(userRepo)
 
 	app := gin.Default()
 
@@ -73,7 +72,7 @@ func StartApplication() {
 	{
 		users.POST("/register", userHandler.UserRegister)
 		users.POST("/login", userHandler.UserLogin)
-		users.PATCH("/topup", userHandler.UserTopUp)
+		users.PATCH("/topup", authService.Authentication(), userHandler.UserTopUp)
 	}
 
 	products := app.Group("products")
