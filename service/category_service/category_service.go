@@ -1,9 +1,16 @@
 package category_service
 
-import "toko-belanja-app/repository/category_repository"
+import (
+	"toko-belanja-app/dto"
+	"toko-belanja-app/pkg/errs"
+	"toko-belanja-app/repository/category_repository"
+)
 
 type CategoryService interface {
-	
+	CreateCategory(categoryPayLoad *dto.CategoriesRequest) (*dto.CategoryResponse, errs.Error)
+	GetAllCategory() (*dto.CategoryResponse, errs.Error)
+	UpdateCategory(categoryId int, categoryPayLoad *dto.CategoriesRequest) (*dto.CategoryResponse, errs.Error)
+	Delete(categoryId int) (*dto.CategoryResponse, errs.Error)
 }
 
 type categoryServiceImpl struct {
@@ -13,3 +20,8 @@ type categoryServiceImpl struct {
 func NewCategoryService(categoryRepo category_repository.CategoryRepository) CategoryService {
 	return &categoryServiceImpl{cr: categoryRepo}
 }
+
+func (cs *categoryServiceImpl) CreateCategory(categoryPayLoad *dto.CategoriesRequest) (*dto.CategoryResponse, errs.Error)
+func (cs *categoryServiceImpl) GetAllCategory() (*dto.CategoryResponse, errs.Error)
+func (cs *categoryServiceImpl) UpdateCategory(categoryId int, categoryPayLoad *dto.CategoriesRequest) (*dto.CategoryResponse, errs.Error)
+func (cs *categoryServiceImpl) Delete(categoryId int) (*dto.CategoryResponse, errs.Error)
