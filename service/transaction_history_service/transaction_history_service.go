@@ -9,7 +9,7 @@ import (
 )
 
 type TransactionHistoryService interface {
-	CreateTransaction(transactionPayLoad *dto.TransactionRequest) (*dto.TransactionHistoryResponse, errs.Error)
+	CreateTransaction(userId int, transactionPayLoad *dto.TransactionRequest) (*dto.TransactionHistoryResponse, errs.Error)
 	GetTransactionWithProducts() (*dto.TransactionHistoryResponse, errs.Error)
 	GetTransactionWithProductsAndUser() (*dto.TransactionHistoryResponse, errs.Error)
 }
@@ -28,6 +28,6 @@ func NewTransactionHistoryService(transactionHistoryRepo transaction_history_rep
 	}
 }
 
-func(ts *transactionHistoryServiceImpl) CreateTransaction(transactionPayLoad *dto.TransactionRequest) (*dto.TransactionHistoryResponse, errs.Error)
+func(ts *transactionHistoryServiceImpl) CreateTransaction(userId int, transactionPayLoad *dto.TransactionRequest) (*dto.TransactionHistoryResponse, errs.Error)
 func(ts *transactionHistoryServiceImpl) GetTransactionWithProducts() (*dto.TransactionHistoryResponse, errs.Error)
 func(ts *transactionHistoryServiceImpl) GetTransactionWithProductsAndUser() (*dto.TransactionHistoryResponse, errs.Error)
