@@ -19,7 +19,7 @@ const (
 		RETURNING
 			id, type, sold_product_amount, created_at;
 	`
-		updateCategoryById = `
+	updateCategoryById = `
 		UPDATE
 			categories
 		SET
@@ -53,15 +53,15 @@ const (
 			c.id
 		ASC
 	`
-		deleteCategoryById = `
+	deleteCategoryById = `
 		DELETE
 		FROM
 			categories
 		WHERE
 			id = $1
-	`	
+	`
 
-		checkCategoryId = `
+	checkCategoryId = `
 		SELECT 
 			c.id 
 		FROM 
@@ -70,9 +70,6 @@ const (
 			c.id = $1
 	`
 )
-
-
-
 
 type categoryPg struct {
 	db *sql.DB
@@ -97,7 +94,7 @@ func (c *categoryPg) CreateCategory(categoryPayLoad *entity.Category) (*dto.Crea
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong"+err.Error())
+		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
 	}
 
 	if err := tx.Commit(); err != nil {
@@ -107,7 +104,6 @@ func (c *categoryPg) CreateCategory(categoryPayLoad *entity.Category) (*dto.Crea
 
 	return &category, nil
 }
-
 
 func (c *categoryPg) GetCategory() ([]category_repository.CategoryProductMapped, errs.Error) {
 	categoryProducts := []category_repository.CategoryProduct{}
@@ -143,4 +139,72 @@ func (c *categoryPg) GetCategory() ([]category_repository.CategoryProductMapped,
 
 	result := category_repository.CategoryProductMapped{}
 	return result.HandleMappingCategoryWithProduct(categoryProducts), nil
+}
+
+func (c *categoryPg) UpdateCategory(categoryPayLoad *entity.Category) (*dto.UpdateCategoryResponse, errs.Error) {
+	tx, err := c.db.Begin()
+
+	if err != nil {
+		tx.Rollback()
+		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+	}
+
+	row := tx.QueryRow(updateCategoryById, categoryPayLoad.Id, categoryPayLoad.Type)
+
+	var categoryUpdate dto.UpdateCategoryResponse
+	err = row.Scan(
+		&categoryUpdate.Id,
+		&categoryUpdate.Type,
+		&categoryPayLoad.SoldProductAmount,
+		&categoryUpdate.UpdatedAt,
+	)
+
+	if err != nil {
+		tx.Rollback()
+		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+	}
+
+	err = tx.Commit()
+
+	if err != nil {
+		tx.Rollback()
+		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+	}
+
+	return &categoryUpdate, nil
+}
+
+func (c *categoryPg) CheckCategoryId(categoryId int) (*entity.Category, errs.Error) {
+	category := entity.Category{}
+	row := c.db.QueryRow(checkCategoryId, categoryId)
+	err := row.Scan(&category.Id)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, errs.NewInternalServerError("rows not found" + err.Error())
+		}
+		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+	}
+
+	return &category, nil
+}
+
+func (c *categoryPg) DeleteCategory(categoryId int) errs.Error {
+	tx, _ := c.db.Begin()
+
+	_, err := tx.Exec(deleteCategoryById, categoryId)
+
+	if err != nil {
+		tx.Rollback()
+		return errs.NewInternalServerError("something went wrong")
+	}
+
+	err = tx.Commit()
+
+	if err != nil {
+		tx.Rollback()
+		return errs.NewInternalServerError("something went wrong")
+	}
+
+	return nil
 }
