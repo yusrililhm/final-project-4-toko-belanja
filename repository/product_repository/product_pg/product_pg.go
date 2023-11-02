@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	createPrdocut = `
+	createProduct = `
 		INSERT INTO products (
 			title, 
 			price,
@@ -96,7 +96,7 @@ func (p *productPg) CreateNewProduct(productPayLoad *entity.Product) (*dto.NewPr
 	var product dto.NewProductResponse
 
 	row := tx.QueryRow(
-		createPrdocut,
+		createProduct,
 		productPayLoad.Title,
 		productPayLoad.Price,
 		productPayLoad.Stock,
@@ -177,4 +177,65 @@ func (p *productPg) GetProductById(id int) (*entity.Product, errs.Error) {
 	}
 
 	return &product, nil
+}
+
+func (p *productPg) UpdateProductById(productPayLoad *entity.Product) (*dto.UpdateProductResponse, errs.Error) {
+	tx, err := p.db.Begin()
+
+	if err != nil {
+		tx.Rollback()
+		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+	}
+
+	row := tx.QueryRow(updateProductById, productPayLoad.Id, productPayLoad.Title, productPayLoad.Price, productPayLoad.Stock, productPayLoad.CategoryId)
+
+	var productUpdate dto.UpdateProductResponse
+	err = row.Scan(
+		&productUpdate.Id,
+		&productUpdate.Title,
+		&productUpdate.Price,
+		&productUpdate.Stock,
+		&productUpdate.CategoryId,
+		&productUpdate.CreatedAt,
+		&productUpdate.UpdatedAt,
+	)
+
+	if err != nil {
+		tx.Rollback()
+		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+	}
+
+	err = tx.Commit()
+
+	if err != nil {
+		tx.Rollback()
+		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+	}
+
+	return &productUpdate, nil
+}
+
+func (p *productPg) DeleteProductById(productId int) errs.Error {
+	tx, err := p.db.Begin()
+
+	if err != nil {
+		tx.Rollback()
+		return errs.NewInternalServerError("something went wrong")
+	}
+
+	_, err = tx.Exec(deleteProductById, productId)
+
+	if err != nil {
+		tx.Rollback()
+		return errs.NewInternalServerError("something went wrong" + err.Error())
+	}
+
+	err = tx.Commit()
+
+	if err != nil {
+		tx.Rollback()
+		return errs.NewInternalServerError("something went wrong" + err.Error())
+	}
+
+	return nil
 }
