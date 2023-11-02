@@ -214,3 +214,28 @@ func (p *productPg) UpdateProductById(productPayLoad *entity.Product) (*dto.Upda
 
 	return &productUpdate, nil
 }
+
+func (p *productPg) DeleteProductById(productId int) errs.Error {
+	tx, err := p.db.Begin()
+
+	if err != nil {
+		tx.Rollback()
+		return errs.NewInternalServerError("something went wrong")
+	}
+
+	_, err = tx.Exec(deleteProductById, productId)
+
+	if err != nil {
+		tx.Rollback()
+		return errs.NewInternalServerError("something went wrong" + err.Error())
+	}
+
+	err = tx.Commit()
+
+	if err != nil {
+		tx.Rollback()
+		return errs.NewInternalServerError("something went wrong" + err.Error())
+	}
+
+	return nil
+}
