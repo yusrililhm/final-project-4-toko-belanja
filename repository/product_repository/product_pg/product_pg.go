@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	createPrdocut = `
+	createProduct = `
 		INSERT INTO products (
 			title, 
 			price,
@@ -96,7 +96,7 @@ func (p *productPg) CreateNewProduct(productPayLoad *entity.Product) (*dto.NewPr
 	var product dto.NewProductResponse
 
 	row := tx.QueryRow(
-		createPrdocut,
+		createProduct,
 		productPayLoad.Title,
 		productPayLoad.Price,
 		productPayLoad.Stock,
