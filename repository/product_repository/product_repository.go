@@ -9,4 +9,6 @@ import (
 type ProductRepository interface {
 	CreateNewProduct(productPayLoad *entity.Product) (*dto.NewProductResponse, errs.Error)
 	GetAllProducts() ([]entity.Product, errs.Error)
+	GetProductById(id int) (*entity.Product, errs.Error)
+	UpdateProductById(productPayLoad *entity.Product) (*dto.UpdateProductResponse, errs.Error)
 }
