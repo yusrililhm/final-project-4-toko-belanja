@@ -50,6 +50,21 @@ func (ps *productServiceImpl) CreateProduct(productPayLoad *dto.ProductRequest) 
 		Data: response,
 	}, nil
 }
-func (ps *productServiceImpl) GetAllProduct() (*dto.ProductResponse, errs.Error)
+func (ps *productServiceImpl) GetAllProduct() (*dto.ProductResponse, errs.Error) {
+	response, err := ps.pr.GetAllProducts()
+
+	if err != nil {
+		if err.Status() == http.StatusNotFound {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	return &dto.ProductResponse{
+		Code: http.StatusOK,
+		Message: "Products has been successfully fetched",
+		Data: response,
+	}, nil
+}
 func (ps *productServiceImpl) UpdateProduct(productId int, productPayLoad *dto.ProductRequest) (*dto.ProductResponse, errs.Error)
 func (ps *productServiceImpl) DeleteProduct(productId int) (*dto.ProductResponse, errs.Error)
