@@ -45,7 +45,15 @@ func (th *transactionHistoryHandlerImpl) AddTransaction(ctx *gin.Context) {
 	}
 
 	userData := ctx.MustGet("userData").(entity.User)
-	_ = userData
+
+	response, err := th.ths.CreateTransaction(userData.Id, addRequest)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }
 
 // GetMyTransaction implements TransactionHistoryHandler.
@@ -59,7 +67,14 @@ func (th *transactionHistoryHandlerImpl) AddTransaction(ctx *gin.Context) {
 // @Success 200 {object} dto.TransactionHistoryResponse
 // @Router /transactions/my-transactions [get]
 func (th *transactionHistoryHandlerImpl) GetMyTransaction(ctx *gin.Context) {
-	
+	response, err := th.ths.GetTransactionWithProducts()
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }
 
 // GetUsersTransaction implements TransactionHistoryHandler.
@@ -73,5 +88,12 @@ func (th *transactionHistoryHandlerImpl) GetMyTransaction(ctx *gin.Context) {
 // @Success 200 {object} dto.TransactionHistoryResponse
 // @Router /transactions/user-transactions [get]
 func (th *transactionHistoryHandlerImpl) GetUsersTransaction(ctx *gin.Context) {
-	
+	response, err := th.ths.GetTransactionWithProductsAndUser()
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }

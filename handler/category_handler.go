@@ -44,6 +44,15 @@ func (ch *categoryHandlerImpl) AddCategory(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(errBindJson.Status(), errBindJson)
 		return
 	}
+
+	response, err := ch.cs.CreateCategory(addRequest)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }
 
 // DeleteCategory implements CategoryHandler.
@@ -59,7 +68,15 @@ func (ch *categoryHandlerImpl) AddCategory(ctx *gin.Context) {
 // @Router /categories/{categoryId} [delete]
 func (ch *categoryHandlerImpl) DeleteCategory(ctx *gin.Context) {
 	categoryId, _ := strconv.Atoi(ctx.Param("categoryId"))
-	_ = categoryId
+
+	response, err := ch.cs.DeleteCategory(categoryId)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }
 
 // GetCategories implements CategoryHandler.
@@ -73,7 +90,14 @@ func (ch *categoryHandlerImpl) DeleteCategory(ctx *gin.Context) {
 // @Success 200 {object} dto.CategoryResponse
 // @Router /categories [get]
 func (ch *categoryHandlerImpl) GetCategories(ctx *gin.Context) {
+	response, err := ch.cs.GetAllCategory()
 
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }
 
 // UpdateCategory implements CategoryHandler.
@@ -99,5 +123,13 @@ func (ch *categoryHandlerImpl) UpdateCategory(ctx *gin.Context) {
 	}
 
 	categoryId, _ := strconv.Atoi(ctx.Param("categoryId"))
-	_ = categoryId
+
+	response, err := ch.cs.UpdateCategory(categoryId, updateRequest)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }

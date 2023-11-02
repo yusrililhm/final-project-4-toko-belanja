@@ -36,7 +36,7 @@ func NewProductHandler(productService product_service.ProductService) ProductHan
 // @Success 201 {object} dto.ProductResponse
 // @Router /products [post]
 func (ph *productHandlerImpl) AddProduct(ctx *gin.Context) {
-	
+
 	addRequest := &dto.ProductRequest{}
 
 	if err := ctx.ShouldBindJSON(addRequest); err != nil {
@@ -44,6 +44,15 @@ func (ph *productHandlerImpl) AddProduct(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(errBindJson.Status(), errBindJson)
 		return
 	}
+
+	response, err := ph.ps.CreateProduct(addRequest)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }
 
 // DeleteProduct implements ProductHandler.
@@ -59,7 +68,15 @@ func (ph *productHandlerImpl) AddProduct(ctx *gin.Context) {
 // @Router /products/{productId} [delete]
 func (ph *productHandlerImpl) DeleteProduct(ctx *gin.Context) {
 	productId, _ := strconv.Atoi(ctx.Param("productId"))
-	_ = productId
+
+	response, err := ph.ps.DeleteProduct(productId)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }
 
 // GetProducts implements ProductHandler.
@@ -73,7 +90,14 @@ func (ph *productHandlerImpl) DeleteProduct(ctx *gin.Context) {
 // @Success 200 {object} dto.ProductResponse
 // @Router /products [get]
 func (ph *productHandlerImpl) GetProducts(ctx *gin.Context) {
+	response, err := ph.ps.GetAllProduct()
 
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }
 
 // UpdateProduct implements ProductHandler.
@@ -99,5 +123,13 @@ func (ph *productHandlerImpl) UpdateProduct(ctx *gin.Context) {
 	}
 
 	productId, _ := strconv.Atoi(ctx.Param("productId"))
-	_ = productId
+
+	response, err := ph.ps.UpdateProduct(productId, updateRequest)
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(response.Code, response)
 }
