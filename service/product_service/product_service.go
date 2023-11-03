@@ -66,5 +66,13 @@ func (ps *productServiceImpl) GetAllProduct() (*dto.ProductResponse, errs.Error)
 		Data: response,
 	}, nil
 }
-func (ps *productServiceImpl) UpdateProduct(productId int, productPayLoad *dto.ProductRequest) (*dto.ProductResponse, errs.Error)
+func (ps *productServiceImpl) UpdateProduct(productId int, productPayLoad *dto.ProductRequest) (*dto.ProductResponse, errs.Error) {
+	err := helpers.ValidateStruct(productPayLoad)
+
+	if err != nil {
+		return nil, err
+	}
+
+	checkProductId, err := ps.pr.
+}
 func (ps *productServiceImpl) DeleteProduct(productId int) (*dto.ProductResponse, errs.Error)
