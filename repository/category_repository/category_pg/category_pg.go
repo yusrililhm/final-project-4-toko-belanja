@@ -48,7 +48,7 @@ const (
 		LEFT JOIN
 			products as p 
 		ON 
-			c.id = p.id
+			c.id = p.category_id
 		WHERE
 			c.deleted_at IS NULL
 		ORDER BY
