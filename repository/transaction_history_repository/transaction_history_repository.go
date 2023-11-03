@@ -8,4 +8,6 @@ import (
 
 type TransactionHistoryRepository interface {
 	CreateNewTransaction(transactionPayLoad *entity.TransactionHistory) (*dto.TransactionBill, errs.Error)
+	GetMyTransaction(UserId int) ([]MyTransactionProductMapped, errs.Error)
+	GetTransaction() ([]TransactionProductMapped, errs.Error)
 }
