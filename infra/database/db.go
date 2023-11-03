@@ -149,9 +149,6 @@ func handleRequiredTables() {
 			AFTER INSERT ON transaction_histories
 			FOR EACH ROW
 			EXECUTE FUNCTION reduce_stock_on_transaction();
-
-
-
 			CREATE OR REPLACE FUNCTION increase_sold_amount_on_transaction() RETURNS TRIGGER AS $$
 			BEGIN
 				UPDATE categories
