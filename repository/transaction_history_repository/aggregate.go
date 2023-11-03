@@ -40,6 +40,20 @@ type TransactionProductMapped struct {
 	User       []user    `json:"User"`
 }
 
+type MyTransactionProduct struct {
+	TransactionHistory entity.TransactionHistory
+	Product            entity.Product
+}
+
+type MyTransactionProductMapped struct {
+	Id         int       `json:"Id"`
+	UserId     int       `json:"UserId"`
+	ProductId  int       `json:"ProductId"`
+	Quantity   uint      `json:"Quantity"`
+	TotalPrice uint      `json:"Total_Price"`
+	Products   []product `json:"Products"`
+}
+
 func (ctm *TransactionProductMapped) HandleMappingTransactionWithProduct(transactionProduct []TransactionProduct) []TransactionProductMapped {
 	transactionProductsMapped := make(map[int]TransactionProductMapped)
 
@@ -83,4 +97,39 @@ func (ctm *TransactionProductMapped) HandleMappingTransactionWithProduct(transac
 		transactionProducts = append(transactionProducts, transactionProduct)
 	}
 	return transactionProducts
+}
+
+func (ctm *MyTransactionProductMapped) HandleMappingMyTransactionWithProduct(mytransactionProduct []MyTransactionProduct) []MyTransactionProductMapped {
+	mytransactionProductsMapped := make(map[int]MyTransactionProductMapped)
+
+	for _, eachMyTransactionProduct := range mytransactionProduct {
+		mytransactionId := eachMyTransactionProduct.TransactionHistory.Id
+		mytransactionProductMapped, exists := mytransactionProductsMapped[mytransactionId]
+		if !exists {
+			mytransactionProductMapped = MyTransactionProductMapped{
+				Id:         eachMyTransactionProduct.TransactionHistory.Id,
+				ProductId:  eachMyTransactionProduct.TransactionHistory.ProductId,
+				UserId:     eachMyTransactionProduct.TransactionHistory.UserId,
+				Quantity:   eachMyTransactionProduct.TransactionHistory.Quantity,
+				TotalPrice: eachMyTransactionProduct.TransactionHistory.TotalPrice,
+			}
+		}
+
+		product := product{
+			Id:         eachMyTransactionProduct.Product.Id,
+			Title:      eachMyTransactionProduct.Product.Title,
+			Price:      eachMyTransactionProduct.Product.Price,
+			Stock:      eachMyTransactionProduct.Product.Stock,
+			CategoryId: eachMyTransactionProduct.Product.CategoryId,
+		}
+
+		mytransactionProductMapped.Products = append(mytransactionProductMapped.Products, product)
+		mytransactionProductsMapped[mytransactionId] = mytransactionProductMapped
+	}
+
+	mytransactionProducts := []MyTransactionProductMapped{}
+	for _, mytransactionProduct := range mytransactionProductsMapped {
+		mytransactionProducts = append(mytransactionProducts, mytransactionProduct)
+	}
+	return mytransactionProducts
 }
