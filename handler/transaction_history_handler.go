@@ -67,7 +67,10 @@ func (th *transactionHistoryHandlerImpl) AddTransaction(ctx *gin.Context) {
 // @Success 200 {object} dto.TransactionHistoryResponse
 // @Router /transactions/my-transactions [get]
 func (th *transactionHistoryHandlerImpl) GetMyTransaction(ctx *gin.Context) {
-	response, err := th.ths.GetTransactionWithProducts()
+
+	userData := ctx.MustGet("userData").(entity.User)
+
+	response, err := th.ths.GetTransactionWithProducts(userData.Id)
 
 	if err != nil {
 		ctx.AbortWithStatusJSON(err.Status(), err)
