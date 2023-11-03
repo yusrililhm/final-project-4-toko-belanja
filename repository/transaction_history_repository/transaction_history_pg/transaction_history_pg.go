@@ -18,18 +18,13 @@ func NewTransactionHistoryPg(db *sql.DB) transaction_history_repository.Transact
 
 const (
 	createTransaction = `
-		INSERT INTO transaction_histories (user_id, product_id, quantity, total_price)
-		SELECT
-			$1,
-			$2,
-			$3,
-			(p.price * $3) AS total_price
-		FROM products p
-		WHERE p.id = $1
-		RETURNING
-			total_price,
-			quantity,
-			p.title AS product_title;
+	INSERT INTO transaction_histories (user_id, product_id, quantity, total_price)
+	VALUES ($1, $2, $2, ((SELECT p.price
+	FROM products AS p
+	WHERE
+	id =$2)*$3))
+	RETURNING
+	product_id, quantity, total_price;
 	`
 	getTransaction = `
 		SELECT
