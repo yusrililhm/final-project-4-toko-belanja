@@ -3,6 +3,7 @@ package transaction_history_service
 import (
 	"toko-belanja-app/dto"
 	"toko-belanja-app/pkg/errs"
+	"toko-belanja-app/pkg/helpers"
 	"toko-belanja-app/repository/product_repository"
 	"toko-belanja-app/repository/transaction_history_repository"
 	"toko-belanja-app/repository/user_repository"
@@ -10,7 +11,7 @@ import (
 
 type TransactionHistoryService interface {
 	CreateTransaction(userId int, transactionPayLoad *dto.TransactionRequest) (*dto.TransactionHistoryResponse, errs.Error)
-	GetTransactionWithProducts() (*dto.TransactionHistoryResponse, errs.Error)
+	GetTransactionWithProducts(userId int) (*dto.TransactionHistoryResponse, errs.Error)
 	GetTransactionWithProductsAndUser() (*dto.TransactionHistoryResponse, errs.Error)
 }
 
@@ -28,6 +29,16 @@ func NewTransactionHistoryService(transactionHistoryRepo transaction_history_rep
 	}
 }
 
-func(ts *transactionHistoryServiceImpl) CreateTransaction(userId int, transactionPayLoad *dto.TransactionRequest) (*dto.TransactionHistoryResponse, errs.Error)
-func(ts *transactionHistoryServiceImpl) GetTransactionWithProducts() (*dto.TransactionHistoryResponse, errs.Error)
+func(ts *transactionHistoryServiceImpl) CreateTransaction(userId int, transactionPayLoad *dto.TransactionRequest) (*dto.TransactionHistoryResponse, errs.Error) {
+	err := helpers.ValidateStruct(transactionPayLoad)
+
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := 
+
+
+}
+func(ts *transactionHistoryServiceImpl) GetTransactionWithProducts(userId int) (*dto.TransactionHistoryResponse, errs.Error)
 func(ts *transactionHistoryServiceImpl) GetTransactionWithProductsAndUser() (*dto.TransactionHistoryResponse, errs.Error)
