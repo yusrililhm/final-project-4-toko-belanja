@@ -129,7 +129,7 @@ func (t *transactionHistoryPg) CreateNewTransaction(transactionPayLoad *entity.T
 	return &transaction, nil
 }
 
-func (t *transactionHistoryPg) getTransaction() ([]transaction_history_repository.TransactionProductMapped, errs.Error) {
+func (t *transactionHistoryPg) GetTransaction() ([]transaction_history_repository.TransactionProductMapped, errs.Error) {
 	transactionProducts := []transaction_history_repository.TransactionProduct{}
 	rows, err := t.db.Query(getTransaction)
 
@@ -172,7 +172,7 @@ func (t *transactionHistoryPg) getTransaction() ([]transaction_history_repositor
 	return result.HandleMappingTransactionWithProduct(transactionProducts), nil
 }
 
-func (t *transactionHistoryPg) getMyTransaction(UserId int) ([]transaction_history_repository.MyTransactionProductMapped, errs.Error) {
+func (t *transactionHistoryPg) GetMyTransaction(UserId int) ([]transaction_history_repository.MyTransactionProductMapped, errs.Error) {
 	mytransactionProducts := []transaction_history_repository.MyTransactionProduct{}
 	rows, err := t.db.Query(getMyTransaction, UserId)
 
