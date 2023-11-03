@@ -12,6 +12,10 @@ For this final project, we were tasked with developing an application called Tok
 - [Swagger]()
 - [Postman]()
 
+# Admin
+- Email : admin@tokobelanja.com
+- Password : rahasia
+
 # Tech Stack
 - [Go](https://go.dev/)
 - [Gin-gonic](https://gin-gonic.com/)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"toko-belanja-app/entity"
 	"toko-belanja-app/infra/config"
 
 	_ "github.com/lib/pq"
@@ -130,7 +131,7 @@ func handleRequiredTables() {
 			END;
 			$$ LANGUAGE plpgsql;
 
-			CREATE TRIGGER transaction_balance_trigger
+			CREATE OR REPLACE TRIGGER transaction_balance_trigger
 			AFTER INSERT ON transaction_histories
 			FOR EACH ROW
 			EXECUTE FUNCTION reduce_balance_on_transaction();
@@ -145,10 +146,11 @@ func handleRequiredTables() {
 			END;
 			$$ LANGUAGE plpgsql;
 
-			CREATE TRIGGER transaction_stock_trigger
+			CREATE OR REPLACE TRIGGER transaction_stock_trigger
 			AFTER INSERT ON transaction_histories
 			FOR EACH ROW
 			EXECUTE FUNCTION reduce_stock_on_transaction();
+
 			CREATE OR REPLACE FUNCTION increase_sold_amount_on_transaction() RETURNS TRIGGER AS $$
 			BEGIN
 				UPDATE categories
@@ -158,14 +160,29 @@ func handleRequiredTables() {
 			END;
 			$$ LANGUAGE plpgsql;
 
-			CREATE TRIGGER transaction_category_trigger
+			CREATE OR REPLACE TRIGGER transaction_category_trigger
 			AFTER INSERT ON transaction_histories
 			FOR EACH ROW
 			EXECUTE FUNCTION increase_sold_amount_on_transaction();
 		`
+
+		createAdminQuery = `
+			INSERT INTO
+				users (
+					full_name,
+					email,
+					password,
+					role,
+					balance
+				)
+			VALUES
+				($1, $2, $3, 'admin', 0)
+			ON CONFLICT(email)
+			DO NOTHING
+		`
 	)
 
-	_, err = db.Exec(createTableUsersQuery, createTrigger)
+	_, err = db.Exec(createTableUsersQuery)
 
 	if err != nil {
 		log.Panic("error while create table users: ", err.Error())
@@ -190,6 +207,33 @@ func handleRequiredTables() {
 
 	if err != nil {
 		log.Panic("error while create table transaction_histories: ", err.Error())
+		return
+	}
+
+	_, err = db.Exec(createTrigger)
+
+	if err != nil {
+		log.Panic("error while create OR REPLACE trigger: ", err.Error())
+		return
+	}
+
+	user := &entity.User{
+		FullName: config.AppConfig().AdminFullName,
+		Email:    config.AppConfig().AdminEmail,
+		Password: config.AppConfig().AdminPassword,
+	}
+
+	if user.FullName == "" && user.Email == "" && user.Password == "" {
+		log.Panicln("full name, email and password can't be empty please fill .env file ")
+		return
+	}
+
+	user.HashPassword()
+
+	_, err = db.Exec(createAdminQuery, user.FullName, user.Email, user.Password)
+
+	if err != nil {
+		log.Panic("error while create admin: ", err.Error())
 		return
 	}
 }
