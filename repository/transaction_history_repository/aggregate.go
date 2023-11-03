@@ -1,0 +1,86 @@
+package transaction_history_repository
+
+import (
+	"time"
+	"toko-belanja-app/entity"
+)
+
+type product struct {
+	Id         int       `json:"id"`
+	Title      string    `json:"title"`
+	Price      uint      `json:"price"`
+	Stock      uint      `json:"stock"`
+	CategoryId int       `json:"category_id"`
+	CreatedAt  time.Time `json:"created_at"`
+	UpdatedAt  time.Time `json:"updated_at"`
+}
+
+type user struct {
+	Id        int       `json:"id"`
+	Email     string    `json:"email"`
+	FullName  string    `json:"full_name"`
+	Balance   uint      `json:"balance"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type TransactionProduct struct {
+	TransactionHistory entity.TransactionHistory
+	Product            entity.Product
+	User               entity.User
+}
+
+type TransactionProductMapped struct {
+	Id         int       `json:"Id"`
+	UserId     int       `json:"UserId"`
+	ProductId  int       `json:"ProductId"`
+	Quantity   uint      `json:"Quantity"`
+	TotalPrice uint      `json:"Total_Price"`
+	Products   []product `json:"Products"`
+	User       []user    `json:"User"`
+}
+
+func (ctm *TransactionProductMapped) HandleMappingTransactionWithProduct(transactionProduct []TransactionProduct) []TransactionProductMapped {
+	transactionProductsMapped := make(map[int]TransactionProductMapped)
+
+	for _, eachTransactionProduct := range transactionProduct {
+		transactionId := eachTransactionProduct.TransactionHistory.Id
+		transactionProductMapped, exists := transactionProductsMapped[transactionId]
+		if !exists {
+			transactionProductMapped = TransactionProductMapped{
+				Id:         eachTransactionProduct.TransactionHistory.Id,
+				ProductId:  eachTransactionProduct.TransactionHistory.ProductId,
+				UserId:     eachTransactionProduct.TransactionHistory.UserId,
+				Quantity:   eachTransactionProduct.TransactionHistory.Quantity,
+				TotalPrice: eachTransactionProduct.TransactionHistory.TotalPrice,
+			}
+		}
+
+		product := product{
+			Id:         eachTransactionProduct.Product.Id,
+			Title:      eachTransactionProduct.Product.Title,
+			Price:      eachTransactionProduct.Product.Price,
+			Stock:      eachTransactionProduct.Product.Stock,
+			CategoryId: eachTransactionProduct.Product.CategoryId,
+		}
+
+		user := user{
+			Id:        eachTransactionProduct.User.Id,
+			Email:     eachTransactionProduct.User.Email,
+			FullName:  eachTransactionProduct.User.FullName,
+			Balance:   eachTransactionProduct.User.Balance,
+			CreatedAt: eachTransactionProduct.User.CreatedAt,
+			UpdatedAt: eachTransactionProduct.User.UpdatedAt,
+		}
+
+		transactionProductMapped.Products = append(transactionProductMapped.Products, product)
+		transactionProductMapped.User = append(transactionProductMapped.User, user)
+		transactionProductsMapped[transactionId] = transactionProductMapped
+	}
+
+	transactionProducts := []TransactionProductMapped{}
+	for _, transactionProduct := range transactionProductsMapped {
+		transactionProducts = append(transactionProducts, transactionProduct)
+	}
+	return transactionProducts
+}
