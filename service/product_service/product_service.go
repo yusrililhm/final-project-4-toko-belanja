@@ -73,6 +73,36 @@ func (ps *productServiceImpl) UpdateProduct(productId int, productPayLoad *dto.P
 		return nil, err
 	}
 
-	checkProductId, err := ps.pr.
+	checkProductId, err := ps.pr.GetProductById(productId)
+
+	if err != nil {
+		if err.Status() == http.StatusNotFound {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	if checkProductId.Id != productId {
+		return nil, errs.NewNotFoundError("invalid user")
+	}
+
+	product := &entity.Product{
+		Title: productPayLoad.Title,
+		Price: productPayLoad.Price,
+		Stock: productPayLoad.Stock,
+		CategoryId: productPayLoad.CategoryId,
+	}
+
+	response, err := ps.pr.UpdateProductById(product)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.ProductResponse{
+		Code: http.StatusOK,
+		Message: "Product has been successfully updated",
+		Data: response,
+	}, nil
 }
 func (ps *productServiceImpl) DeleteProduct(productId int) (*dto.ProductResponse, errs.Error)
