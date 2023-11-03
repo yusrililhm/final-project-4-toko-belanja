@@ -118,9 +118,57 @@ func handleRequiredTables() {
 										products(id)
 					)
 		`
+		createTrigger = `
+			CREATE OR REPLACE FUNCTION reduce_balance_on_transaction() RETURNS TRIGGER AS $$
+			BEGIN
+				UPDATE users
+				SET balance = balance - (NEW.quantity * (
+					SELECT price FROM products WHERE id = NEW.product_id
+				))
+				WHERE id = NEW.user_id;
+				RETURN NEW;
+			END;
+			$$ LANGUAGE plpgsql;
+
+			CREATE TRIGGER transaction_balance_trigger
+			AFTER INSERT ON transaction_histories
+			FOR EACH ROW
+			EXECUTE FUNCTION reduce_balance_on_transaction();
+
+
+			CREATE OR REPLACE FUNCTION reduce_stock_on_transaction() RETURNS TRIGGER AS $$
+			BEGIN
+				UPDATE products
+				SET stock = stock - NEW.quantity
+				WHERE id = NEW.product_id;
+				RETURN NEW;
+			END;
+			$$ LANGUAGE plpgsql;
+
+			CREATE TRIGGER transaction_stock_trigger
+			AFTER INSERT ON transaction_histories
+			FOR EACH ROW
+			EXECUTE FUNCTION reduce_stock_on_transaction();
+
+
+
+			CREATE OR REPLACE FUNCTION increase_sold_amount_on_transaction() RETURNS TRIGGER AS $$
+			BEGIN
+				UPDATE categories
+				SET sold_product_amount = sold_product_amount + NEW.quantity
+				WHERE id = (SELECT category_id FROM products WHERE id = NEW.product_id);
+				RETURN NEW;
+			END;
+			$$ LANGUAGE plpgsql;
+
+			CREATE TRIGGER transaction_category_trigger
+			AFTER INSERT ON transaction_histories
+			FOR EACH ROW
+			EXECUTE FUNCTION increase_sold_amount_on_transaction();
+		`
 	)
 
-	_, err = db.Exec(createTableUsersQuery)
+	_, err = db.Exec(createTableUsersQuery, createTrigger)
 
 	if err != nil {
 		log.Panic("error while create table users: ", err.Error())
