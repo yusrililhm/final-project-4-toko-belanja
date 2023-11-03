@@ -105,4 +105,25 @@ func (ps *productServiceImpl) UpdateProduct(productId int, productPayLoad *dto.P
 		Data: response,
 	}, nil
 }
-func (ps *productServiceImpl) DeleteProduct(productId int) (*dto.ProductResponse, errs.Error)
+func (ps *productServiceImpl) DeleteProduct(productId int) (*dto.ProductResponse, errs.Error) {
+	checkProductId, err :=  ps.pr.GetProductById(productId)
+
+	if err != nil {
+		if err.Status() == http.StatusNotFound {
+			return nil, errs.NewBadRequestError("invalid user")
+		}
+		return nil, err
+	}
+
+	if checkProductId.Id != productId {
+		return nil, errs.NewNotFoundError("invalid user")
+	}
+
+	ps.pr.DeleteProductById(productId)
+
+	return &dto.ProductResponse{
+		Code: http.StatusOK,
+		Message: "Product has been successfully deleted",
+		Data: nil,
+	}, nil
+}
