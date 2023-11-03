@@ -68,28 +68,29 @@ const (
 	`
 
 	getMyTransaction = `
-	SELECT t.id, 
-		t.user_id, 
-		t.quantity, 
-		t.total_price, 
-		p.id, 
-		p.title, 
-		p.price, 
-		p.stock, 
-		p.category_Id, 
-		p.created_at, 
-		p.updated_at
-	FROM 
-		transaction_histories as t
-	LEFT JOIN
-		products as p
-	ON
-		t.id = p.id
-	WHERE t.user_id = $1 
-	t.deleted_at IS NULL
-	ORDER BY 
-	t.id ASC
-	`
+		SELECT t.id, 
+			t.product_id,
+			t.user_id, 
+			t.quantity, 
+			t.total_price, 
+			p.id, 
+			p.title, 
+			p.price, 
+			p.stock, 
+			p.category_Id, 
+			p.created_at, 
+			p.updated_at
+		FROM 
+			transaction_histories as t
+		LEFT JOIN
+			products as p
+		ON
+			t.product_id = p.id
+		WHERE t.user_id = $1 
+		t.deleted_at IS NULL
+		ORDER BY 
+		t.id ASC
+		`
 )
 
 func (t *transactionHistoryPg) CreateNewTransaction(transactionPayLoad *entity.TransactionHistory) (*dto.TransactionBill, errs.Error) {
