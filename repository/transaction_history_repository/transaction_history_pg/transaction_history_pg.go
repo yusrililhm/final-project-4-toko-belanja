@@ -171,3 +171,40 @@ func (t *transactionHistoryPg) getTransaction() ([]transaction_history_repositor
 	result := transaction_history_repository.TransactionProductMapped{}
 	return result.HandleMappingTransactionWithProduct(transactionProducts), nil
 }
+
+func (t *transactionHistoryPg) getMyTransaction(UserId int) ([]transaction_history_repository.MyTransactionProductMapped, errs.Error) {
+	mytransactionProducts := []transaction_history_repository.MyTransactionProduct{}
+	rows, err := t.db.Query(getMyTransaction, UserId)
+
+	if err != nil {
+		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+	}
+
+	for rows.Next() {
+		var mytransactionProduct transaction_history_repository.MyTransactionProduct
+
+		err := rows.Scan(
+			&mytransactionProduct.TransactionHistory.Id,
+			&mytransactionProduct.TransactionHistory.ProductId,
+			&mytransactionProduct.TransactionHistory.UserId,
+			&mytransactionProduct.TransactionHistory.Quantity,
+			&mytransactionProduct.TransactionHistory.TotalPrice,
+			&mytransactionProduct.Product.Id,
+			&mytransactionProduct.Product.Title,
+			&mytransactionProduct.Product.Price,
+			&mytransactionProduct.Product.Stock,
+			&mytransactionProduct.Product.CategoryId,
+			&mytransactionProduct.Product.CreatedAt,
+			&mytransactionProduct.Product.UpdatedAt,
+		)
+
+		if err != nil {
+			return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		}
+
+		mytransactionProducts = append(mytransactionProducts, mytransactionProduct)
+	}
+
+	result := transaction_history_repository.MyTransactionProductMapped{}
+	return result.HandleMappingMyTransactionWithProduct(mytransactionProducts), nil
+}
