@@ -10,7 +10,6 @@ For this final project, we were tasked with developing an application called Tok
 # Demo
 - [API]()
 - [Swagger]()
-- [Postman]()
 
 # Admin
 - Email : admin@tokobelanja.com
@@ -29,4 +28,20 @@ For this final project, we were tasked with developing an application called Tok
 
 # Database Relation
 
-# Swagger UI
+# Schema
+| Domain       | Method   | Endpoint                        | Middleware                     | Description            |
+|--------------|----------|---------------------------------|--------------------------------|------------------------|
+| Users        | POST     | /users/register                 | -                              | User register          |
+| Users        | POST     | /users/login                    | -                              | User login             |
+| Users        | PATCH    | /users/topup                    | Authentication                 | User topup             |
+| Categories   | POST     | /categories                     | Authentication & Authorization | Add category           |
+| Categories   | GET      | /categories                     | Authentication & Authorization | Get Categories         |
+| Categories   | PATCH    | /categories/:categoryId         | Authentication & Authorization | Update Category        |
+| Categories   | DELETE   | /categories/:categoryId         | Authentication & Authorization | Delete Category        |
+| Products     | POST     | /products                       | Authentication & Authorization | Add Product            |
+| Products     | GET      | /products                       | Authentication                 | Get Products           |
+| Products     | PUT      | /products/:productId            | Authentication & Authorization | Update Product         |
+| Products     | DELETE   | /products/:productId            | Authentication & Authorization | Delete Product         |
+| Transactions | POST     | /transactions                   | Authentication                 | Add Transactions       |
+| Transactions | GET      | /transactions/my-transactions   | Authentication                 | Get My Transactionss   |
+| Transactions | GET      | /transactions/user-transactions | Authentication & Authorization | Get Users Transactions |
