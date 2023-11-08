@@ -89,5 +89,36 @@ func (ts *transactionHistoryServiceImpl) CreateTransaction(userId int, transacti
 		},
 	}, nil
 }
-func (ts *transactionHistoryServiceImpl) GetTransactionWithProducts(userId int) (*dto.TransactionHistoryResponse, errs.Error)
-func (ts *transactionHistoryServiceImpl) GetTransactionWithProductsAndUser() (*dto.TransactionHistoryResponse, errs.Error)
+func (ts *transactionHistoryServiceImpl) GetTransactionWithProducts(userId int) (*dto.TransactionHistoryResponse, errs.Error) {
+	response, err := ts.thr.GetMyTransaction(userId)
+
+	if err != nil {
+		if err.Status() == http.StatusNotFound {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	return &dto.TransactionHistoryResponse{
+		Code: http.StatusOK,
+		Message: "Your transaction has been successfully fetched",
+		Data: response,
+	}, nil
+}
+
+func (ts *transactionHistoryServiceImpl) GetTransactionWithProductsAndUser() (*dto.TransactionHistoryResponse, errs.Error) {
+	response, err := ts.thr.GetTransaction()
+
+	if err != nil {
+		if err.Status() == http.StatusNotFound {
+			return nil, err
+		}
+		return nil, err
+	}
+
+	return &dto.TransactionHistoryResponse{
+		Code: http.StatusOK,
+		Message: "Transaction has been successfuly fetched",
+		Data: response,
+	}, nil
+}
