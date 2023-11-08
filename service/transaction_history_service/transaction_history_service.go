@@ -6,7 +6,6 @@ import (
 	"toko-belanja-app/entity"
 	"toko-belanja-app/pkg/errs"
 	"toko-belanja-app/pkg/helpers"
-	"toko-belanja-app/repository/category_repository"
 	"toko-belanja-app/repository/product_repository"
 	"toko-belanja-app/repository/transaction_history_repository"
 	"toko-belanja-app/repository/user_repository"
@@ -22,7 +21,6 @@ type transactionHistoryServiceImpl struct {
 	thr transaction_history_repository.TransactionHistoryRepository
 	pr  product_repository.ProductRepository
 	ur  user_repository.UserRepository
-	cr	category_repository.CategoryRepository
 }
 
 func NewTransactionHistoryService(transactionHistoryRepo transaction_history_repository.TransactionHistoryRepository, productRepo product_repository.ProductRepository, userRepo user_repository.UserRepository) TransactionHistoryService {
@@ -68,9 +66,9 @@ func (ts *transactionHistoryServiceImpl) CreateTransaction(userId int, transacti
 	}
 
 	transaction := &entity.TransactionHistory{
-		UserId: userId,
+		UserId:    userId,
 		ProductId: transactionPayLoad.ProductId,
-		Quantity: transactionPayLoad.Quantity,
+		Quantity:  transactionPayLoad.Quantity,
 	}
 
 	response, err := ts.thr.CreateNewTransaction(transaction)
@@ -80,11 +78,11 @@ func (ts *transactionHistoryServiceImpl) CreateTransaction(userId int, transacti
 	}
 
 	return &dto.TransactionHistoryResponse{
-		Code: http.StatusCreated,
+		Code:    http.StatusCreated,
 		Message: "You have successfully purchased the product",
 		Data: dto.TransactionBill{
-			TotalPrice: response.TotalPrice,
-			Quantity: response.Quantity,
+			TotalPrice:   response.TotalPrice,
+			Quantity:     response.Quantity,
 			ProductTitle: response.ProductTitle,
 		},
 	}, nil
@@ -100,9 +98,9 @@ func (ts *transactionHistoryServiceImpl) GetTransactionWithProducts(userId int) 
 	}
 
 	return &dto.TransactionHistoryResponse{
-		Code: http.StatusOK,
+		Code:    http.StatusOK,
 		Message: "Your transaction has been successfully fetched",
-		Data: response,
+		Data:    response,
 	}, nil
 }
 
@@ -117,8 +115,8 @@ func (ts *transactionHistoryServiceImpl) GetTransactionWithProductsAndUser() (*d
 	}
 
 	return &dto.TransactionHistoryResponse{
-		Code: http.StatusOK,
+		Code:    http.StatusOK,
 		Message: "Transaction has been successfuly fetched",
-		Data: response,
+		Data:    response,
 	}, nil
 }
