@@ -63,7 +63,7 @@ func (ch *categoryHandlerImpl) AddCategory(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer Token"
-// @Param CategoryId path int true "Category Id"
+// @Param categoryId path int true "Category Id"
 // @Success 200 {object} dto.CategoryResponse
 // @Router /categories/{categoryId} [delete]
 func (ch *categoryHandlerImpl) DeleteCategory(ctx *gin.Context) {
@@ -108,7 +108,7 @@ func (ch *categoryHandlerImpl) GetCategories(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer Token"
-// @Param CategoryId path int true "Category Id path"
+// @Param categoryId path int true "Category Id path"
 // @Param dto.CategoriesRequest body dto.CategoriesRequest true "body request for update category"
 // @Success 200 {object} dto.CategoryResponse
 // @Router /categories/{categoryId} [patch]

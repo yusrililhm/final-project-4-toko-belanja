@@ -157,7 +157,7 @@ paths:
         type: string
       - description: Category Id
         in: path
-        name: CategoryId
+        name: categoryId
         required: true
         type: integer
       produces:
@@ -182,7 +182,7 @@ paths:
         type: string
       - description: Category Id path
         in: path
-        name: CategoryId
+        name: categoryId
         required: true
         type: integer
       - description: body request for update category
@@ -261,7 +261,7 @@ paths:
         type: string
       - description: Product Id
         in: path
-        name: ProductId
+        name: productId
         required: true
         type: integer
       produces:
@@ -286,7 +286,7 @@ paths:
         type: string
       - description: Product Id
         in: path
-        name: ProductId
+        name: productId
         required: true
         type: integer
       - description: body request for update product

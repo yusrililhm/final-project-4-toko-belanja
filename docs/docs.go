@@ -114,7 +114,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Category Id",
-                        "name": "CategoryId",
+                        "name": "categoryId",
                         "in": "path",
                         "required": true
                     }
@@ -151,7 +151,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Category Id path",
-                        "name": "CategoryId",
+                        "name": "categoryId",
                         "in": "path",
                         "required": true
                     },
@@ -270,7 +270,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Product Id",
-                        "name": "ProductId",
+                        "name": "productId",
                         "in": "path",
                         "required": true
                     },
@@ -316,7 +316,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Product Id",
-                        "name": "ProductId",
+                        "name": "productId",
                         "in": "path",
                         "required": true
                     }
