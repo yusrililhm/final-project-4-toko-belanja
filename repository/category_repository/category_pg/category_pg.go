@@ -13,7 +13,7 @@ const (
 		INSERT INTO "categories" 
 		(
 			type,
-			sold_product_amount,
+			sold_product_amount
 		)
 		VALUES ($1, 0)
 		RETURNING
@@ -68,7 +68,7 @@ const (
 		SELECT 
 			c.id,
 			c.type,
-			c.sold_product_amount,
+			c.sold_product_amount
 		FROM 
 			categories AS c
 		WHERE
