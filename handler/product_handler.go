@@ -63,7 +63,7 @@ func (ph *productHandlerImpl) AddProduct(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer Token"
-// @Param ProductId path int true "Product Id"
+// @Param productId path int true "Product Id"
 // @Success 200 {object} dto.ProductResponse
 // @Router /products/{productId} [delete]
 func (ph *productHandlerImpl) DeleteProduct(ctx *gin.Context) {
@@ -108,7 +108,7 @@ func (ph *productHandlerImpl) GetProducts(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer Token"
-// @Param ProductId path int true "Product Id"
+// @Param productId path int true "Product Id"
 // @Param dto.ProductRequest body dto.ProductRequest true "body request for update product"
 // @Success 200 {object} dto.ProductResponse
 // @Router /products/{productId} [put]

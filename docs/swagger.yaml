@@ -105,7 +105,7 @@ paths:
       parameters:
       - description: Bearer Token
         in: header
-        name: Bearer
+        name: Authorization
         required: true
         type: string
       produces:
@@ -125,7 +125,7 @@ paths:
       parameters:
       - description: Bearer Token
         in: header
-        name: Bearer
+        name: Authorization
         required: true
         type: string
       - description: body request for add category
@@ -152,12 +152,12 @@ paths:
       parameters:
       - description: Bearer Token
         in: header
-        name: Bearer
+        name: Authorization
         required: true
         type: string
       - description: Category Id
         in: path
-        name: CategoryId
+        name: categoryId
         required: true
         type: integer
       produces:
@@ -177,12 +177,12 @@ paths:
       parameters:
       - description: Bearer Token
         in: header
-        name: Bearer
+        name: Authorization
         required: true
         type: string
       - description: Category Id path
         in: path
-        name: CategoryId
+        name: categoryId
         required: true
         type: integer
       - description: body request for update category
@@ -209,7 +209,7 @@ paths:
       parameters:
       - description: Bearer Token
         in: header
-        name: Bearer
+        name: Authorization
         required: true
         type: string
       produces:
@@ -229,7 +229,7 @@ paths:
       parameters:
       - description: Bearer Token
         in: header
-        name: Bearer
+        name: Authorization
         required: true
         type: string
       - description: body request for add product
@@ -256,12 +256,12 @@ paths:
       parameters:
       - description: Bearer Token
         in: header
-        name: Bearer
+        name: Authorization
         required: true
         type: string
       - description: Product Id
         in: path
-        name: ProductId
+        name: productId
         required: true
         type: integer
       produces:
@@ -281,12 +281,12 @@ paths:
       parameters:
       - description: Bearer Token
         in: header
-        name: Bearer
+        name: Authorization
         required: true
         type: string
       - description: Product Id
         in: path
-        name: ProductId
+        name: productId
         required: true
         type: integer
       - description: body request for update product
@@ -319,7 +319,7 @@ paths:
           $ref: '#/definitions/dto.TransactionRequest'
       - description: Bearer Token
         in: header
-        name: Bearer
+        name: Authorization
         required: true
         type: string
       produces:
@@ -340,7 +340,7 @@ paths:
       parameters:
       - description: Bearer Token
         in: header
-        name: Bearer
+        name: Authorization
         required: true
         type: string
       produces:
@@ -361,7 +361,7 @@ paths:
       parameters:
       - description: Bearer Token
         in: header
-        name: Bearer
+        name: Authorization
         required: true
         type: string
       produces:
