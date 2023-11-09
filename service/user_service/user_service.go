@@ -116,7 +116,7 @@ func (us *userServiceImpl) TopUpBalance(userId int, userPayLoad *dto.UsersTopUpR
 		return nil, err
 	}
 
-	balance := fmt.Sprintf("Your balance has been successfully updated to Rp%d\n", response.Balance)
+	balance := fmt.Sprintf("Your balance has been successfully updated to Rp%d", response.Balance)
 
 	return &dto.UserResponse{
 		Code:    http.StatusOK,
