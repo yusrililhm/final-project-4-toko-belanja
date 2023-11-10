@@ -120,27 +120,27 @@ func (c *categoryPg) GetCategory() ([]category_repository.CategoryProductMapped,
 	}
 
 	for rows.Next() {
-		categoryProduct := category_repository.CategoryProduct{}
+		categoryProduct := categoryWithProduct{}
 
 		err := rows.Scan(
-			&categoryProduct.Category.Id,
-			&categoryProduct.Category.Type,
-			&categoryProduct.Category.SoldProductAmount,
-			&categoryProduct.Category.UpdatedAt,
-			&categoryProduct.Category.CreatedAt,
-			&categoryProduct.Product.Id,
-			&categoryProduct.Product.Title,
-			&categoryProduct.Product.Price,
-			&categoryProduct.Product.Stock,
-			&categoryProduct.Product.CreatedAt,
-			&categoryProduct.Product.UpdatedAt,
+			&categoryProduct.CategoryId,
+			&categoryProduct.CategoryType,
+			&categoryProduct.CategorySoldProductAmount,
+			&categoryProduct.CategoryCreatedAt,
+			&categoryProduct.CategoryUpdatedAt,
+			&categoryProduct.ProductId,
+			&categoryProduct.ProductTitle,
+			&categoryProduct.ProductPrice,
+			&categoryProduct.ProductStock,
+			&categoryProduct.ProductCreatedAt,
+			&categoryProduct.ProductUpdatedAt,
 		)
 
 		if err != nil {
 			return nil, errs.NewInternalServerError("something went wrong" + err.Error())
 		}
 
-		categoryProducts = append(categoryProducts, categoryProduct)
+		categoryProducts = append(categoryProducts, categoryProduct.categoryWithProductToEntity())
 	}
 
 	result := category_repository.CategoryProductMapped{}
