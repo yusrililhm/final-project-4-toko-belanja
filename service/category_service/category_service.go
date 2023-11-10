@@ -117,7 +117,11 @@ func (cs *categoryServiceImpl) DeleteCategory(categoryId int) (*dto.CategoryResp
 		return nil, errs.NewNotFoundError("invalid user")
 	}
 
-	cs.cr.DeleteCategory(categoryId)
+	err = cs.cr.DeleteCategory(categoryId)
+
+	if err != nil {
+		return nil, err
+	}
 
 	return &dto.CategoryResponse{
 		Code: http.StatusOK,
