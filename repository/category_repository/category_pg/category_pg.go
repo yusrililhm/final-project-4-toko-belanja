@@ -105,7 +105,7 @@ func (c *categoryPg) CreateCategory(categoryPayLoad *entity.Category) (*dto.Crea
 
 	if err := tx.Commit(); err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong")
+		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
 	}
 
 	return &category, nil
@@ -183,7 +183,7 @@ func (c *categoryPg) UpdateCategory(categoryPayLoad *entity.Category) (*dto.Upda
 func (c *categoryPg) CheckCategoryId(categoryId int) (*entity.Category, errs.Error) {
 	category := entity.Category{}
 	row := c.db.QueryRow(checkCategoryId, categoryId)
-	err := row.Scan(&category.Id)
+	err := row.Scan(&category.Id, &category.Type, &category.SoldProductAmount)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
