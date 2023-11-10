@@ -64,7 +64,7 @@ const (
 		WHERE
 			id = $1
 		RETURNING
-			id, title, price, stock, category_id, updated_at
+			id, title, price, stock, category_id, created_at, updated_at
 	`
 
 	deleteProductById = `
