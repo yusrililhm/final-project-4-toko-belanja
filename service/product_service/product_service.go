@@ -87,6 +87,7 @@ func (ps *productServiceImpl) UpdateProduct(productId int, productPayLoad *dto.P
 	}
 
 	product := &entity.Product{
+		Id: productId,
 		Title: productPayLoad.Title,
 		Price: productPayLoad.Price,
 		Stock: productPayLoad.Stock,
@@ -119,7 +120,11 @@ func (ps *productServiceImpl) DeleteProduct(productId int) (*dto.ProductResponse
 		return nil, errs.NewNotFoundError("invalid user")
 	}
 
-	ps.pr.DeleteProductById(productId)
+	err = ps.pr.DeleteProductById(productId)
+
+	if err != nil {
+		return nil, err
+	}
 
 	return &dto.ProductResponse{
 		Code: http.StatusOK,

@@ -86,6 +86,7 @@ func (cs *categoryServiceImpl) UpdateCategory(categoryId int, categoryPayLoad *d
 	}
 
 	category := &entity.Category{
+		Id: categoryId,
 		Type: categoryPayLoad.Type,
 	}
 
@@ -114,6 +115,12 @@ func (cs *categoryServiceImpl) DeleteCategory(categoryId int) (*dto.CategoryResp
 
 	if checkCategory.Id != categoryId {
 		return nil, errs.NewNotFoundError("invalid user")
+	}
+
+	err = cs.cr.DeleteCategory(categoryId)
+
+	if err != nil {
+		return nil, err
 	}
 
 	return &dto.CategoryResponse{
