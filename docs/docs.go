@@ -36,7 +36,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Bearer Token",
-                        "name": "Bearer",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     }
@@ -66,7 +66,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Bearer Token",
-                        "name": "Bearer",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
@@ -107,14 +107,14 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Bearer Token",
-                        "name": "Bearer",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "Category Id",
-                        "name": "CategoryId",
+                        "name": "categoryId",
                         "in": "path",
                         "required": true
                     }
@@ -144,14 +144,14 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Bearer Token",
-                        "name": "Bearer",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "Category Id path",
-                        "name": "CategoryId",
+                        "name": "categoryId",
                         "in": "path",
                         "required": true
                     },
@@ -192,7 +192,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Bearer Token",
-                        "name": "Bearer",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     }
@@ -222,7 +222,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Bearer Token",
-                        "name": "Bearer",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
@@ -263,14 +263,14 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Bearer Token",
-                        "name": "Bearer",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "Product Id",
-                        "name": "ProductId",
+                        "name": "productId",
                         "in": "path",
                         "required": true
                     },
@@ -309,14 +309,14 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Bearer Token",
-                        "name": "Bearer",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "Product Id",
-                        "name": "ProductId",
+                        "name": "productId",
                         "in": "path",
                         "required": true
                     }
@@ -357,7 +357,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Bearer Token",
-                        "name": "Bearer",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     }
@@ -389,7 +389,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Bearer Token",
-                        "name": "Bearer",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     }
@@ -421,7 +421,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Bearer Token",
-                        "name": "Bearer",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     }
