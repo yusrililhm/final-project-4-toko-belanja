@@ -77,13 +77,13 @@ func (ps *productServiceImpl) UpdateProduct(productId int, productPayLoad *dto.P
 
 	if err != nil {
 		if err.Status() == http.StatusNotFound {
-			return nil, err
+			return nil, errs.NewBadRequestError("Not found")
 		}
 		return nil, err
 	}
 
 	if checkProductId.Id != productId {
-		return nil, errs.NewNotFoundError("invalid user")
+		return nil, errs.NewNotFoundError("invalid product")
 	}
 
 	product := &entity.Product{
@@ -111,13 +111,13 @@ func (ps *productServiceImpl) DeleteProduct(productId int) (*dto.ProductResponse
 
 	if err != nil {
 		if err.Status() == http.StatusNotFound {
-			return nil, errs.NewBadRequestError("invalid user")
+			return nil, errs.NewBadRequestError("Not found")
 		}
 		return nil, err
 	}
 
 	if checkProductId.Id != productId {
-		return nil, errs.NewNotFoundError("invalid user")
+		return nil, errs.NewNotFoundError("invalid product")
 	}
 
 	err = ps.pr.DeleteProductById(productId)
