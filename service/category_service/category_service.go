@@ -86,6 +86,7 @@ func (cs *categoryServiceImpl) UpdateCategory(categoryId int, categoryPayLoad *d
 	}
 
 	category := &entity.Category{
+		Id: categoryId,
 		Type: categoryPayLoad.Type,
 	}
 
