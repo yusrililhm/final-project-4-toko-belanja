@@ -6,6 +6,7 @@ import (
 	"toko-belanja-app/entity"
 	"toko-belanja-app/pkg/errs"
 	"toko-belanja-app/pkg/helpers"
+	"toko-belanja-app/repository/category_repository"
 	"toko-belanja-app/repository/product_repository"
 )
 
@@ -18,6 +19,7 @@ type ProductService interface {
 
 type productServiceImpl struct {
 	pr product_repository.ProductRepository
+	cr category_repository.CategoryRepository
 }
 
 func NewProductService(ProductRepo product_repository.ProductRepository) ProductService {
@@ -84,6 +86,19 @@ func (ps *productServiceImpl) UpdateProduct(productId int, productPayLoad *dto.P
 
 	if checkProductId.Id != productId {
 		return nil, errs.NewNotFoundError("invalid product")
+	}
+
+	checkCategoryId, err := ps.cr.CheckCategoryId(productPayLoad.CategoryId)
+
+	if err != nil {
+		if err.Status() == http.StatusNotFound {
+			return nil, errs.NewBadRequestError("Not found")
+		}
+		return nil, err
+	}
+
+	if checkCategoryId.Id != productPayLoad.CategoryId {
+		return nil, errs.NewNotFoundError("invalid category id")
 	}
 
 	product := &entity.Product{
