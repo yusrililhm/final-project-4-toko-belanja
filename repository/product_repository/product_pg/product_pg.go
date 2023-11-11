@@ -14,11 +14,11 @@ const (
 			title, 
 			price,
 			stock,
-			category_Id,
+			category_Id
 		)
 		VALUES ($1, $2, $3, $4)
 		RETURNING
-			id, title, price, stock, category_id, created_at;
+			id, title, price, stock, category_id, created_at
 	`
 
 	getProduct = `
@@ -64,7 +64,7 @@ const (
 		WHERE
 			id = $1
 		RETURNING
-			id, title, price, stock, category_id, updated_at
+			id, title, price, stock, category_id, created_at, updated_at
 	`
 
 	deleteProductById = `
