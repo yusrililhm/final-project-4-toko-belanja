@@ -33,6 +33,19 @@ func (ps *productServiceImpl) CreateProduct(productPayLoad *dto.ProductRequest) 
 		return nil, err
 	}
 
+	checkCategoryId, err := ps.cr.CheckCategoryId(productPayLoad.CategoryId)
+
+	if err != nil {
+		if err.Status() == http.StatusNotFound {
+			return nil, errs.NewBadRequestError("Not found")
+		}
+		return nil, err
+	}
+
+	if checkCategoryId.Id != productPayLoad.CategoryId {
+		return nil, errs.NewNotFoundError("invalid category id")
+	}
+
 	product := &entity.Product{
 		Title: productPayLoad.Title,
 		Price: productPayLoad.Price,
