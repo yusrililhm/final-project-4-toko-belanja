@@ -81,7 +81,7 @@ const (
 			products as p
 		ON
 			t.product_id = p.id
-		WHERE t.user_id = $1 
+		WHERE t.user_id = $1 AND
 		t.deleted_at IS NULL
 		ORDER BY 
 		t.id ASC
