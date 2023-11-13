@@ -50,9 +50,9 @@ func (ps *productServiceImpl) CreateProduct(productPayLoad *dto.ProductRequest) 
 	}
 
 	product := &entity.Product{
-		Title: productPayLoad.Title,
-		Price: productPayLoad.Price,
-		Stock: productPayLoad.Stock,
+		Title:      productPayLoad.Title,
+		Price:      productPayLoad.Price,
+		Stock:      productPayLoad.Stock,
 		CategoryId: productPayLoad.CategoryId,
 	}
 
@@ -63,11 +63,12 @@ func (ps *productServiceImpl) CreateProduct(productPayLoad *dto.ProductRequest) 
 	}
 
 	return &dto.ProductResponse{
-		Code: http.StatusCreated,
+		Code:    http.StatusCreated,
 		Message: "Your product has been successfully created",
-		Data: response,
+		Data:    response,
 	}, nil
 }
+
 func (ps *productServiceImpl) GetAllProduct() (*dto.ProductResponse, errs.Error) {
 	response, err := ps.pr.GetAllProducts()
 
@@ -79,11 +80,12 @@ func (ps *productServiceImpl) GetAllProduct() (*dto.ProductResponse, errs.Error)
 	}
 
 	return &dto.ProductResponse{
-		Code: http.StatusOK,
+		Code:    http.StatusOK,
 		Message: "Products has been successfully fetched",
-		Data: response,
+		Data:    response,
 	}, nil
 }
+
 func (ps *productServiceImpl) UpdateProduct(productId int, productPayLoad *dto.ProductRequest) (*dto.ProductResponse, errs.Error) {
 	err := helpers.ValidateStruct(productPayLoad)
 
@@ -118,10 +120,10 @@ func (ps *productServiceImpl) UpdateProduct(productId int, productPayLoad *dto.P
 	}
 
 	product := &entity.Product{
-		Id: productId,
-		Title: productPayLoad.Title,
-		Price: productPayLoad.Price,
-		Stock: productPayLoad.Stock,
+		Id:         productId,
+		Title:      productPayLoad.Title,
+		Price:      productPayLoad.Price,
+		Stock:      productPayLoad.Stock,
 		CategoryId: productPayLoad.CategoryId,
 	}
 
@@ -132,13 +134,14 @@ func (ps *productServiceImpl) UpdateProduct(productId int, productPayLoad *dto.P
 	}
 
 	return &dto.ProductResponse{
-		Code: http.StatusOK,
+		Code:    http.StatusOK,
 		Message: "Product has been successfully updated",
-		Data: response,
+		Data:    response,
 	}, nil
 }
+
 func (ps *productServiceImpl) DeleteProduct(productId int) (*dto.ProductResponse, errs.Error) {
-	checkProductId, err :=  ps.pr.GetProductById(productId)
+	checkProductId, err := ps.pr.GetProductById(productId)
 
 	if err != nil {
 		if err.Status() == http.StatusNotFound {
@@ -158,8 +161,8 @@ func (ps *productServiceImpl) DeleteProduct(productId int) (*dto.ProductResponse
 	}
 
 	return &dto.ProductResponse{
-		Code: http.StatusOK,
+		Code:    http.StatusOK,
 		Message: "Product has been successfully deleted",
-		Data: nil,
+		Data:    nil,
 	}, nil
 }
