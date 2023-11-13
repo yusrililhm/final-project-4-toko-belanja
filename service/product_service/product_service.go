@@ -22,8 +22,8 @@ type productServiceImpl struct {
 	cr category_repository.CategoryRepository
 }
 
-func NewProductService(ProductRepo product_repository.ProductRepository) ProductService {
-	return &productServiceImpl{pr: ProductRepo}
+func NewProductService(productRepo product_repository.ProductRepository) ProductService {
+	return &productServiceImpl{pr: productRepo}
 }
 
 func (ps *productServiceImpl) CreateProduct(productPayLoad *dto.ProductRequest) (*dto.ProductResponse, errs.Error) {
