@@ -17,7 +17,6 @@ type CreateNewUsersResponse struct {
 	Id        int       `json:"id" example:"1"`
 	FullName  string    `json:"full_name" example:"Harry Maguire"`
 	Email     string    `json:"email" example:"maguire.harry@mufc.com"`
-	Password  string    `json:"password" example:"hash password"`
 	Balance   uint      `json:"balance" example:"120000"`
 	CreatedAt time.Time `json:"created_at" example:"2023-10-09T05:14:35.19324086+07:00"`
 }
