@@ -22,7 +22,7 @@ type productServiceImpl struct {
 	cr category_repository.CategoryRepository
 }
 
-func NewProductService(ProductRepo product_repository.ProductRepository) ProductService {
+func newProductService(ProductRepo product_repository.ProductRepository) ProductService {
 	return &productServiceImpl{pr: ProductRepo}
 }
 

@@ -20,7 +20,7 @@ type userServiceImpl struct {
 	ur user_repository.UserRepository
 }
 
-func NewUserService(userRepo user_repository.UserRepository) UserService {
+func newUserService(userRepo user_repository.UserRepository) UserService {
 	return &userServiceImpl{ur: userRepo}
 }
 

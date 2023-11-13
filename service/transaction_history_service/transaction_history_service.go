@@ -23,7 +23,7 @@ type transactionHistoryServiceImpl struct {
 	ur  user_repository.UserRepository
 }
 
-func NewTransactionHistoryService(transactionHistoryRepo transaction_history_repository.TransactionHistoryRepository, productRepo product_repository.ProductRepository, userRepo user_repository.UserRepository) TransactionHistoryService {
+func newTransactionHistoryService(transactionHistoryRepo transaction_history_repository.TransactionHistoryRepository, productRepo product_repository.ProductRepository, userRepo user_repository.UserRepository) TransactionHistoryService {
 	return &transactionHistoryServiceImpl{
 		thr: transactionHistoryRepo,
 		pr:  productRepo,
