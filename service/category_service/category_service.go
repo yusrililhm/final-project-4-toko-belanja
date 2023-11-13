@@ -20,7 +20,7 @@ type categoryServiceImpl struct {
 	cr category_repository.CategoryRepository
 }
 
-func newCategoryService(categoryRepo category_repository.CategoryRepository) CategoryService {
+func NewCategoryService(categoryRepo category_repository.CategoryRepository) CategoryService {
 	return &categoryServiceImpl{cr: categoryRepo}
 }
 
