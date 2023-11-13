@@ -52,7 +52,7 @@ func StartApplication() {
 	categoryHandler := NewCategoryHandler(categoryService)
 
 	productRepo := product_pg.NewProductPg(db)
-	productService := product_service.NewProductService(productRepo)
+	productService := product_service.NewProductService(productRepo, categoryRepo)
 	productHandler := NewProductHandler(productService)
 
 	transactionHistoryRepo := transaction_history_pg.NewTransactionHistoryPg(db)
