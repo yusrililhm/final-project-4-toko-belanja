@@ -8,8 +8,8 @@ For this final project, we were tasked with developing an application called Tok
 - Yusril Ilham Kholid
 
 # Demo
-- [API]()
-- [Swagger]()
+- [API](https://final-project-4-toko-belanja-production.up.railway.app)
+- [Swagger](https://final-project-4-toko-belanja-production.up.railway.app/swagger/index.html)
 
 # Admin
 - Email : admin@tokobelanja.com
@@ -25,8 +25,6 @@ For this final project, we were tasked with developing an application called Tok
 - [Postgres Driver](https://pkg.go.dev/github.com/lib/pq)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Godotenv](https://github.com/joho/godotenv)
-
-# Database Relation
 
 # Schema
 | Domain       | Method   | Endpoint                        | Middleware                     | Description            |
