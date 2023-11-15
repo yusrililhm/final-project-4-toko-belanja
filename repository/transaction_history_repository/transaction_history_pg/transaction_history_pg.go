@@ -19,7 +19,7 @@ func NewTransactionHistoryPg(db *sql.DB) transaction_history_repository.Transact
 const (
 	createTransaction = `
 	INSERT INTO transaction_histories (user_id, product_id, quantity, total_price)
-	VALUES ($1, $2, $2, ((SELECT p.price
+	VALUES ($1, $2, $3, ((SELECT p.price
 	FROM products AS p
 	WHERE
 	id =$2)*$3))

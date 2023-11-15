@@ -187,7 +187,7 @@ func (c *categoryPg) CheckCategoryId(categoryId int) (*entity.Category, errs.Err
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, errs.NewInternalServerError("rows not found" + err.Error())
+			return nil, errs.NewNotFoundError("rows not found " + err.Error())
 		}
 		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
 	}

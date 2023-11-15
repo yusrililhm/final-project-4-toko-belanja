@@ -148,7 +148,7 @@ func (u *userPg) GetUserByEmail(email string) (*entity.User, errs.Error) {
 
 	row := u.db.QueryRow(getUserByEmail, email)
 
-	err := row.Scan(&user.Id, &user.FullName, &user.Email, &user.Balance, &user.Role, &user.CreatedAt, &user.UpdatedAt)
+	err := row.Scan(&user.Id, &user.FullName, &user.Email, &user.Password, &user.Balance, &user.Role, &user.CreatedAt, &user.UpdatedAt)
 
 	if err != nil {
 		if errors.Is(sql.ErrNoRows, err) {
