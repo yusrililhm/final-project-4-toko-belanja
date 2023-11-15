@@ -21,7 +21,7 @@ const (
 		)
 		VALUES ($1, $2, $3, 'customer', 0)
 		RETURNING
-			id, full_name, email, password, balance, created_at;
+			id, full_name, email, balance, created_at;
 	`
 	UsersTopUp = `
 		UPDATE "users"
@@ -80,7 +80,7 @@ func (u *userPg) CreateNewUser(userPayLoad *entity.User) (*dto.CreateNewUsersRes
 	var user dto.CreateNewUsersResponse
 	row := tx.QueryRow(createNewUser, userPayLoad.FullName, userPayLoad.Email, userPayLoad.Password)
 
-	err = row.Scan(&user.Id, &user.FullName, &user.Email, &user.Password, &user.Balance, &user.CreatedAt)
+	err = row.Scan(&user.Id, &user.FullName, &user.Email, &user.Balance, &user.CreatedAt)
 
 	if err != nil {
 		tx.Rollback()
@@ -148,7 +148,7 @@ func (u *userPg) GetUserByEmail(email string) (*entity.User, errs.Error) {
 
 	row := u.db.QueryRow(getUserByEmail, email)
 
-	err := row.Scan(&user.Id, &user.FullName, &user.Email, &user.Password, &user.Balance, &user.Role, &user.CreatedAt, &user.UpdatedAt)
+	err := row.Scan(&user.Id, &user.FullName, &user.Email, &user.Balance, &user.Role, &user.CreatedAt, &user.UpdatedAt)
 
 	if err != nil {
 		if errors.Is(sql.ErrNoRows, err) {
