@@ -8,7 +8,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "final-project-4-toko-belanja-production.up.railway.app",
     "basePath": "/",
     "paths": {
         "/categories": {

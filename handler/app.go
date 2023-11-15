@@ -30,7 +30,7 @@ import (
 // @contact.name GLNG-KS07 - Group 5
 // @contact.url https://github.com/yusrililhm/final-project-4-toko-belanja
 
-// @host localhost:8080
+// @host final-project-4-toko-belanja-production.up.railway.app
 // @BasePath /
 
 func StartApplication() {

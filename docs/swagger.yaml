@@ -89,7 +89,7 @@ definitions:
         example: 150000
         type: integer
     type: object
-host: localhost:8080
+host: final-project-4-toko-belanja-production.up.railway.app
 info:
   contact:
     name: GLNG-KS07 - Group 5
