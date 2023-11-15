@@ -76,6 +76,8 @@ func (ctm *TransactionProductMapped) HandleMappingTransactionWithProduct(transac
 			Price:      eachTransactionProduct.Product.Price,
 			Stock:      eachTransactionProduct.Product.Stock,
 			CategoryId: eachTransactionProduct.Product.CategoryId,
+			CreatedAt:  eachTransactionProduct.Product.CreatedAt,
+			UpdatedAt:  eachTransactionProduct.Product.UpdatedAt,
 		}
 
 		user := user{
@@ -121,6 +123,8 @@ func (ctm *MyTransactionProductMapped) HandleMappingMyTransactionWithProduct(myt
 			Price:      eachMyTransactionProduct.Product.Price,
 			Stock:      eachMyTransactionProduct.Product.Stock,
 			CategoryId: eachMyTransactionProduct.Product.CategoryId,
+			CreatedAt:  eachMyTransactionProduct.Product.CreatedAt,
+			UpdatedAt:  eachMyTransactionProduct.Product.UpdatedAt,
 		}
 
 		mytransactionProductMapped.Products = append(mytransactionProductMapped.Products, product)
