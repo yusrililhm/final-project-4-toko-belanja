@@ -26,6 +26,17 @@ definitions:
         example: secret
         type: string
     type: object
+  dto.GetProductResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/entity.Product'
+        type: array
+      message:
+        type: string
+    type: object
   dto.ProductRequest:
     properties:
       category_id:
@@ -88,6 +99,23 @@ definitions:
       balance:
         example: 150000
         type: integer
+    type: object
+  entity.Product:
+    properties:
+      category_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      price:
+        type: integer
+      stock:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
     type: object
 host: final-project-4-toko-belanja-production.up.railway.app
 info:
@@ -218,7 +246,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.ProductResponse'
+            $ref: '#/definitions/dto.GetProductResponse'
       summary: Get products
       tags:
       - Products

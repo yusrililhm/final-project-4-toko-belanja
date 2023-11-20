@@ -87,7 +87,7 @@ func (ph *productHandlerImpl) DeleteProduct(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer Token"
-// @Success 200 {object} dto.ProductResponse
+// @Success 200 {object} dto.GetProductResponse
 // @Router /products [get]
 func (ph *productHandlerImpl) GetProducts(ctx *gin.Context) {
 	response, err := ph.ps.GetAllProduct()
