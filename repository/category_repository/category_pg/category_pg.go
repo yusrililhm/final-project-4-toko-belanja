@@ -100,12 +100,12 @@ func (c *categoryPg) CreateCategory(categoryPayLoad *entity.Category) (*dto.Crea
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	if err := tx.Commit(); err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	return &category, nil
@@ -116,7 +116,7 @@ func (c *categoryPg) GetCategory() ([]category_repository.CategoryProductMapped,
 	rows, err := c.db.Query(getCategoryWithProduct)
 
 	if err != nil {
-		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	for rows.Next() {
@@ -137,7 +137,7 @@ func (c *categoryPg) GetCategory() ([]category_repository.CategoryProductMapped,
 		)
 
 		if err != nil {
-			return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+			return nil, errs.NewInternalServerError("something went wrong")
 		}
 
 		categoryProducts = append(categoryProducts, categoryProduct.categoryWithProductToEntity())
@@ -152,7 +152,7 @@ func (c *categoryPg) UpdateCategory(categoryPayLoad *entity.Category) (*dto.Upda
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	row := tx.QueryRow(updateCategoryById, categoryPayLoad.Id, categoryPayLoad.Type)
@@ -167,14 +167,14 @@ func (c *categoryPg) UpdateCategory(categoryPayLoad *entity.Category) (*dto.Upda
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	err = tx.Commit()
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	return &categoryUpdate, nil
@@ -187,9 +187,9 @@ func (c *categoryPg) CheckCategoryId(categoryId int) (*entity.Category, errs.Err
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, errs.NewNotFoundError("rows not found " + err.Error())
+			return nil, errs.NewNotFoundError("rows not found ")
 		}
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	return &category, nil
