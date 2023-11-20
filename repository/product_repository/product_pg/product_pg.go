@@ -125,14 +125,14 @@ func (p *productPg) CreateNewProduct(productPayLoad *entity.Product) (*dto.NewPr
 	return &product, nil
 }
 
-func (p *productPg) GetAllProducts() ([]*entity.Product, errs.Error) {
+func (p *productPg) GetAllProducts() (*[]entity.Product, errs.Error) {
 	rows, err := p.db.Query(getProduct)
 	if err != nil {
 		return nil, errs.NewInternalServerError("something went wrong")
 	}
 	defer rows.Close()
 
-	var products []*entity.Product
+	var products []entity.Product
 
 	for rows.Next() {
 		var product entity.Product
@@ -148,14 +148,14 @@ func (p *productPg) GetAllProducts() ([]*entity.Product, errs.Error) {
 			return nil, errs.NewInternalServerError("something went wrong")
 		}
 
-		products = append(products, &product)
+		products = append(products, product)
 	}
 
 	if err := rows.Err(); err != nil {
 		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
-	return products, nil
+	return &products, nil
 }
 
 func (p *productPg) GetProductById(id int) (*entity.Product, errs.Error) {
