@@ -12,7 +12,7 @@ import (
 
 type ProductService interface {
 	CreateProduct(productPayLoad *dto.ProductRequest) (*dto.ProductResponse, errs.Error)
-	GetAllProduct() (*dto.ProductResponse, errs.Error)
+	GetAllProduct() (*dto.GetProductResponse, errs.Error)
 	UpdateProduct(productId int, productPayLoad *dto.ProductRequest) (*dto.ProductResponse, errs.Error)
 	DeleteProduct(productId int) (*dto.ProductResponse, errs.Error)
 }
@@ -69,7 +69,7 @@ func (ps *productServiceImpl) CreateProduct(productPayLoad *dto.ProductRequest) 
 	}, nil
 }
 
-func (ps *productServiceImpl) GetAllProduct() (*dto.ProductResponse, errs.Error) {
+func (ps *productServiceImpl) GetAllProduct() (*dto.GetProductResponse, errs.Error) {
 	response, err := ps.pr.GetAllProducts()
 
 	if err != nil {
@@ -79,7 +79,7 @@ func (ps *productServiceImpl) GetAllProduct() (*dto.ProductResponse, errs.Error)
 		return nil, err
 	}
 
-	return &dto.ProductResponse{
+	return &dto.GetProductResponse{
 		Code:    http.StatusOK,
 		Message: "Products has been successfully fetched",
 		Data:    response,

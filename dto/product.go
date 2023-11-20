@@ -1,6 +1,9 @@
 package dto
 
-import "time"
+import (
+	"time"
+	"toko-belanja-app/entity"
+)
 
 type ProductRequest struct {
 	Title      string `json:"title" valid:"required~Title can't be empty" example:"Jersey King MU 2023/2024"`
@@ -9,13 +12,10 @@ type ProductRequest struct {
 	CategoryId int    `json:"category_id" example:"1"`
 }
 
-type GetProduct struct {
-	Id         int       `json:"id"`
-	Title      string    `json:"title"`
-	Price      uint      `json:"price"`
-	Stock      uint      `json:"stock"`
-	CategoryId int       `json:"category_id"`
-	CreatedAt  time.Time `json:"created_at"`
+type GetProductResponse struct {
+	Code    int               `json:"code"`
+	Message string            `json:"message"`
+	Data    []*entity.Product `json:"data"`
 }
 
 type NewProductResponse struct {
