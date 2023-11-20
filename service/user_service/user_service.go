@@ -70,7 +70,7 @@ func (us *userServiceImpl) LoginUser(userPayLoad *dto.UsersLoginRequest) (*dto.U
 
 	isValidPassword := user.ComparePassword(userPayLoad.Password)
 
-	if isValidPassword == false {
+	if !isValidPassword {
 		return nil, errs.NewBadRequestError("invalid email/password")
 	}
 
