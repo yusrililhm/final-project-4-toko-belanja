@@ -90,7 +90,7 @@ func (p *productPg) CreateNewProduct(productPayLoad *entity.Product) (*dto.NewPr
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	var product dto.NewProductResponse
@@ -113,13 +113,13 @@ func (p *productPg) CreateNewProduct(productPayLoad *entity.Product) (*dto.NewPr
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	err = tx.Commit()
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	return &product, nil
@@ -128,7 +128,7 @@ func (p *productPg) CreateNewProduct(productPayLoad *entity.Product) (*dto.NewPr
 func (p *productPg) GetAllProducts() ([]entity.Product, errs.Error) {
 	rows, err := p.db.Query(getProduct)
 	if err != nil {
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 	defer rows.Close()
 
@@ -145,13 +145,13 @@ func (p *productPg) GetAllProducts() ([]entity.Product, errs.Error) {
 			&product.CreatedAt,
 		)
 		if err != nil {
-			return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+			return nil, errs.NewInternalServerError("something went wrong")
 		}
 		products = append(products, product)
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	return products, nil
@@ -173,7 +173,7 @@ func (p *productPg) GetProductById(id int) (*entity.Product, errs.Error) {
 		if err == sql.ErrNoRows {
 			return nil, errs.NewNotFoundError("product not found")
 		}
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	return &product, nil
@@ -184,7 +184,7 @@ func (p *productPg) UpdateProductById(productPayLoad *entity.Product) (*dto.Upda
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	row := tx.QueryRow(updateProductById, productPayLoad.Id, productPayLoad.Title, productPayLoad.Price, productPayLoad.Stock, productPayLoad.CategoryId)
@@ -202,14 +202,14 @@ func (p *productPg) UpdateProductById(productPayLoad *entity.Product) (*dto.Upda
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	err = tx.Commit()
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	return &productUpdate, nil
@@ -227,14 +227,14 @@ func (p *productPg) DeleteProductById(productId int) errs.Error {
 
 	if err != nil {
 		tx.Rollback()
-		return errs.NewInternalServerError("something went wrong" + err.Error())
+		return errs.NewInternalServerError("something went wrong")
 	}
 
 	err = tx.Commit()
 
 	if err != nil {
 		tx.Rollback()
-		return errs.NewInternalServerError("something went wrong" + err.Error())
+		return errs.NewInternalServerError("something went wrong")
 	}
 
 	return nil

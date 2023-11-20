@@ -93,7 +93,7 @@ func (t *transactionHistoryPg) CreateNewTransaction(transactionPayLoad *entity.T
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	var transaction dto.TransactionBill
@@ -112,13 +112,13 @@ func (t *transactionHistoryPg) CreateNewTransaction(transactionPayLoad *entity.T
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	err = tx.Commit()
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	return &transaction, nil
@@ -129,7 +129,7 @@ func (t *transactionHistoryPg) GetTransaction() ([]transaction_history_repositor
 	rows, err := t.db.Query(getTransaction)
 
 	if err != nil {
-		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	for rows.Next() {
@@ -157,7 +157,7 @@ func (t *transactionHistoryPg) GetTransaction() ([]transaction_history_repositor
 		)
 
 		if err != nil {
-			return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+			return nil, errs.NewInternalServerError("something went wrong")
 		}
 
 		transactionProducts = append(transactionProducts, transactionProduct)
@@ -172,7 +172,7 @@ func (t *transactionHistoryPg) GetMyTransaction(UserId int) ([]transaction_histo
 	rows, err := t.db.Query(getMyTransaction, UserId)
 
 	if err != nil {
-		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	for rows.Next() {
@@ -194,7 +194,7 @@ func (t *transactionHistoryPg) GetMyTransaction(UserId int) ([]transaction_histo
 		)
 
 		if err != nil {
-			return nil, errs.NewInternalServerError("something went wrong " + err.Error())
+			return nil, errs.NewInternalServerError("something went wrong")
 		}
 
 		mytransactionProducts = append(mytransactionProducts, mytransactionProduct)

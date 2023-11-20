@@ -84,7 +84,7 @@ func (u *userPg) CreateNewUser(userPayLoad *entity.User) (*dto.CreateNewUsersRes
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	err = tx.Commit()
@@ -112,7 +112,7 @@ func (u *userPg) TopUpBalance(userPayLoad *entity.User) (*dto.TopUpResponse, err
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	err = tx.Commit()
@@ -137,7 +137,7 @@ func (u *userPg) GetUserById(userId int) (*entity.User, errs.Error) {
 		if errors.Is(sql.ErrNoRows, err) {
 			return nil, errs.NewNotFoundError("user not found")
 		}
-		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	return &user, nil
@@ -154,7 +154,7 @@ func (u *userPg) GetUserByEmail(email string) (*entity.User, errs.Error) {
 		if errors.Is(sql.ErrNoRows, err) {
 			return nil, errs.NewNotFoundError("user not found")
 		}
-		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
+		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
 	return &user, nil
