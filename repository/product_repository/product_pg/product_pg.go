@@ -132,7 +132,7 @@ func (p *productPg) GetAllProducts() ([]*entity.Product, errs.Error) {
 	}
 	defer rows.Close()
 
-	var products []*entity.Product
+	products :=  []*entity.Product{}
 
 	for rows.Next() {
 		var product entity.Product
@@ -144,6 +144,7 @@ func (p *productPg) GetAllProducts() ([]*entity.Product, errs.Error) {
 			&product.CategoryId,
 			&product.CreatedAt,
 		)
+		
 		if err != nil {
 			return nil, errs.NewInternalServerError("something went wrong")
 		}
