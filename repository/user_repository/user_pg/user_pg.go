@@ -77,7 +77,18 @@ func (u *userPg) CreateNewUser(userPayLoad *entity.User) (*dto.CreateNewUsersRes
 		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
+	usr, err := u.GetUserByEmail(userPayLoad.Email)
+
+	if err != nil {
+		return nil, errs.NewInternalServerError("somthing went wrong")
+	}
+
+	if userPayLoad.Email == usr.Email {
+		return nil, errs.NewConflictError("user already exits")
+	}
+
 	var user dto.CreateNewUsersResponse
+
 	row := tx.QueryRow(createNewUser, userPayLoad.FullName, userPayLoad.Email, userPayLoad.Password)
 
 	err = row.Scan(&user.Id, &user.FullName, &user.Email, &user.Balance, &user.CreatedAt)
@@ -123,7 +134,6 @@ func (u *userPg) TopUpBalance(userPayLoad *entity.User) (*dto.TopUpResponse, err
 	}
 
 	return &topUp, nil
-
 }
 
 func (u *userPg) GetUserById(userId int) (*entity.User, errs.Error) {
