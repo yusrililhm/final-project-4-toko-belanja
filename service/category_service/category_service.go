@@ -76,7 +76,7 @@ func (cs *categoryServiceImpl) UpdateCategory(categoryId int, categoryPayLoad *d
 
 	if err != nil {
 		if err.Status() == http.StatusNotFound {
-			return nil, errs.NewBadRequestError("Category not found")
+			return nil, errs.NewNotFoundError("Category not found")
 		}
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (cs *categoryServiceImpl) DeleteCategory(categoryId int) (*dto.CategoryResp
 
 	if err != nil {
 		if err.Status() == http.StatusNotFound {
-			return nil, errs.NewBadRequestError("Category not found")
+			return nil, errs.NewNotFoundError("Category not found")
 		}
 		return nil, err
 	}

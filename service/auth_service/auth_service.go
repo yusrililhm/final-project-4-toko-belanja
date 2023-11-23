@@ -45,6 +45,13 @@ func (a *authServiceImpl) Authentication() gin.HandlerFunc {
 			return
 		}
 
+		_, err = a.ur.GetUserByEmail(user.Email)
+
+		if err != nil {
+			ctx.AbortWithStatusJSON(invalidTokenErr.Status(), invalidTokenErr)
+			return
+		}
+
 		ctx.Set("userData", user)
 		ctx.Next()
 	}
