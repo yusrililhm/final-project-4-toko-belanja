@@ -21,8 +21,8 @@ type categoryWithProduct struct {
 	ProductUpdatedAt          sql.NullTime
 }
 
-func (c *categoryWithProduct) categoryWithProductToEntity() category_repository.CategoryProduct {
-	return category_repository.CategoryProduct{
+func (c *categoryWithProduct) categoryWithProductToEntity() *category_repository.CategoryProduct {
+	return &category_repository.CategoryProduct{
 		Category: entity.Category{
 			Id:                c.CategoryId,
 			Type:              c.CategoryType,

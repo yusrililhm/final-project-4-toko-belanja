@@ -28,7 +28,7 @@ type CategoryProductMapped struct {
 	Products          []product `json:"Products"`
 }
 
-func (ctm *CategoryProductMapped) HandleMappingCategoryWithProduct(categoryProduct []CategoryProduct) []CategoryProductMapped {
+func (ctm *CategoryProductMapped) HandleMappingCategoryWithProduct(categoryProduct []CategoryProduct) []*CategoryProductMapped {
 	categoryProductsMapped := make(map[int]CategoryProductMapped)
 
 	for _, eachCategoryProduct := range categoryProduct {
@@ -52,13 +52,15 @@ func (ctm *CategoryProductMapped) HandleMappingCategoryWithProduct(categoryProdu
 			CreatedAt: eachCategoryProduct.Product.CreatedAt,
 			UpdatedAt: eachCategoryProduct.Product.UpdatedAt,
 		}
+
 		categoryProductMapped.Products = append(categoryProductMapped.Products, product)
 		categoryProductsMapped[categoryId] = categoryProductMapped
 	}
 
-	categoryProducts := []CategoryProductMapped{}
+	categoryProducts := []*CategoryProductMapped{}
+
 	for _, categoryProduct := range categoryProductsMapped {
-		categoryProducts = append(categoryProducts, categoryProduct)
+		categoryProducts = append(categoryProducts, &categoryProduct)
 	}
 
 	return categoryProducts

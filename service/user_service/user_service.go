@@ -39,6 +39,12 @@ func (us *userServiceImpl) RegisterUser(userPayLoad *dto.CreateNewUsersRequest) 
 
 	user.HashPassword()
 
+	u, _ := us.ur.GetUserByEmail(userPayLoad.Email)
+	
+	if u.Email == userPayLoad.Email {
+		return nil, errs.NewConflictError("email has been used")
+	}
+
 	response, err := us.ur.CreateNewUser(user)
 
 	if err != nil {

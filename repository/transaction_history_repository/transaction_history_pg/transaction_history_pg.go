@@ -24,7 +24,14 @@ const (
 	WHERE
 	id =$2)*$3))
 	RETURNING
-	product_id, quantity, total_price
+	product_id, quantity, (
+		SELECT 
+			title 
+		FROM 
+			products
+		WHERE 
+			id = $2
+	)
 	`
 	getTransaction = `
 		SELECT
@@ -96,7 +103,7 @@ func (t *transactionHistoryPg) CreateNewTransaction(transactionPayLoad *entity.T
 		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
-	var transaction dto.TransactionBill
+	transaction :=  dto.TransactionBill{}
 
 	row := tx.QueryRow(
 		createTransaction,
@@ -112,7 +119,7 @@ func (t *transactionHistoryPg) CreateNewTransaction(transactionPayLoad *entity.T
 
 	if err != nil {
 		tx.Rollback()
-		return nil, errs.NewInternalServerError("something went wrong")
+		return nil, errs.NewInternalServerError("something went wrong" + err.Error())
 	}
 
 	err = tx.Commit()
