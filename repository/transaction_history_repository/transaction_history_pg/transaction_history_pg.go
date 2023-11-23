@@ -24,7 +24,7 @@ const (
 	WHERE
 	id =$2)*$3))
 	RETURNING
-	product_id, quantity, p.title
+	product_id, quantity, total_price
 	`
 	getTransaction = `
 		SELECT
