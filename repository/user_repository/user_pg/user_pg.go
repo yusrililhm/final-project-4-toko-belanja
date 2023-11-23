@@ -77,16 +77,6 @@ func (u *userPg) CreateNewUser(userPayLoad *entity.User) (*dto.CreateNewUsersRes
 		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
-	usr, err := u.GetUserByEmail(userPayLoad.Email)
-
-	if err != nil {
-		return nil, errs.NewInternalServerError("somthing went wrong")
-	}
-
-	if userPayLoad.Email == usr.Email {
-		return nil, errs.NewConflictError("user already exits")
-	}
-
 	var user dto.CreateNewUsersResponse
 
 	row := tx.QueryRow(createNewUser, userPayLoad.FullName, userPayLoad.Email, userPayLoad.Password)
@@ -117,7 +107,8 @@ func (u *userPg) TopUpBalance(userPayLoad *entity.User) (*dto.TopUpResponse, err
 		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
-	var topUp dto.TopUpResponse
+	topUp :=  dto.TopUpResponse{}
+
 	row := tx.QueryRow(UsersTopUp, userPayLoad.Id, userPayLoad.Balance)
 	err = row.Scan(&topUp.Balance)
 
@@ -137,7 +128,7 @@ func (u *userPg) TopUpBalance(userPayLoad *entity.User) (*dto.TopUpResponse, err
 }
 
 func (u *userPg) GetUserById(userId int) (*entity.User, errs.Error) {
-	var user entity.User
+	user :=  entity.User{}
 
 	row := u.db.QueryRow(getUserById, userId)
 
@@ -154,7 +145,7 @@ func (u *userPg) GetUserById(userId int) (*entity.User, errs.Error) {
 }
 
 func (u *userPg) GetUserByEmail(email string) (*entity.User, errs.Error) {
-	var user entity.User
+	user :=  entity.User{}
 
 	row := u.db.QueryRow(getUserByEmail, email)
 
@@ -162,9 +153,9 @@ func (u *userPg) GetUserByEmail(email string) (*entity.User, errs.Error) {
 
 	if err != nil {
 		if errors.Is(sql.ErrNoRows, err) {
-			return nil, errs.NewNotFoundError("user not found")
+			return &user, errs.NewNotFoundError("user not found")
 		}
-		return nil, errs.NewInternalServerError("something went wrong")
+		return &user, errs.NewInternalServerError("something went wrong")
 	}
 
 	return &user, nil

@@ -93,7 +93,7 @@ func (p *productPg) CreateNewProduct(productPayLoad *entity.Product) (*dto.NewPr
 		return nil, errs.NewInternalServerError("something went wrong")
 	}
 
-	var product dto.NewProductResponse
+	product := dto.NewProductResponse{}
 
 	row := tx.QueryRow(
 		createProduct,
@@ -127,12 +127,14 @@ func (p *productPg) CreateNewProduct(productPayLoad *entity.Product) (*dto.NewPr
 
 func (p *productPg) GetAllProducts() ([]*entity.Product, errs.Error) {
 	rows, err := p.db.Query(getProduct)
+
 	if err != nil {
 		return nil, errs.NewInternalServerError("something went wrong")
 	}
+
 	defer rows.Close()
 
-	products :=  []*entity.Product{}
+	products := []*entity.Product{}
 
 	for rows.Next() {
 		var product entity.Product
@@ -144,7 +146,7 @@ func (p *productPg) GetAllProducts() ([]*entity.Product, errs.Error) {
 			&product.CategoryId,
 			&product.CreatedAt,
 		)
-		
+
 		if err != nil {
 			return nil, errs.NewInternalServerError("something went wrong")
 		}
@@ -160,7 +162,7 @@ func (p *productPg) GetAllProducts() ([]*entity.Product, errs.Error) {
 }
 
 func (p *productPg) GetProductById(id int) (*entity.Product, errs.Error) {
-	var product entity.Product
+	product := entity.Product{}
 
 	err := p.db.QueryRow(getProductById, id).Scan(
 		&product.Id,
@@ -191,7 +193,8 @@ func (p *productPg) UpdateProductById(productPayLoad *entity.Product) (*dto.Upda
 
 	row := tx.QueryRow(updateProductById, productPayLoad.Id, productPayLoad.Title, productPayLoad.Price, productPayLoad.Stock, productPayLoad.CategoryId)
 
-	var productUpdate dto.UpdateProductResponse
+	productUpdate := dto.UpdateProductResponse{}
+	
 	err = row.Scan(
 		&productUpdate.Id,
 		&productUpdate.Title,
