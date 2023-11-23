@@ -86,7 +86,7 @@ func (cs *categoryServiceImpl) UpdateCategory(categoryId int, categoryPayLoad *d
 	}
 
 	category := &entity.Category{
-		Id: categoryId,
+		Id:   categoryId,
 		Type: categoryPayLoad.Type,
 	}
 
@@ -124,8 +124,8 @@ func (cs *categoryServiceImpl) DeleteCategory(categoryId int) (*dto.CategoryResp
 	}
 
 	return &dto.CategoryResponse{
-		Code: http.StatusOK,
+		Code:    http.StatusOK,
 		Message: "Category has been successfully deleted",
-		Data: nil,
+		Data:    nil,
 	}, nil
 }
