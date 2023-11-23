@@ -42,7 +42,7 @@ func (ts *transactionHistoryServiceImpl) CreateTransaction(userId int, transacti
 
 	if err != nil {
 		if err.Status() == http.StatusNotFound {
-			return nil, errs.NewBadRequestError("Product not Found")
+			return nil, errs.NewNotFoundError("Product not Found")
 		}
 		return nil, err
 	}

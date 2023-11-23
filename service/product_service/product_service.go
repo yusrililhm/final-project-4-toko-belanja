@@ -40,7 +40,7 @@ func (ps *productServiceImpl) CreateProduct(productPayLoad *dto.ProductRequest) 
 
 	if err != nil {
 		if err.Status() == http.StatusNotFound {
-			return nil, errs.NewBadRequestError("Category not found")
+			return nil, errs.NewNotFoundError("Category not found")
 		}
 		return nil, err
 	}
@@ -97,7 +97,7 @@ func (ps *productServiceImpl) UpdateProduct(productId int, productPayLoad *dto.P
 
 	if err != nil {
 		if err.Status() == http.StatusNotFound {
-			return nil, errs.NewBadRequestError("Product not found")
+			return nil, errs.NewNotFoundError("Product not found")
 		}
 		return nil, err
 	}
@@ -145,7 +145,7 @@ func (ps *productServiceImpl) DeleteProduct(productId int) (*dto.ProductResponse
 
 	if err != nil {
 		if err.Status() == http.StatusNotFound {
-			return nil, errs.NewBadRequestError("Product not found")
+			return nil, errs.NewNotFoundError("Product not found")
 		}
 		return nil, err
 	}
