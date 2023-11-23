@@ -112,7 +112,8 @@ func (c *categoryPg) CreateCategory(categoryPayLoad *entity.Category) (*dto.Crea
 }
 
 func (c *categoryPg) GetCategory() ([]*category_repository.CategoryProductMapped, errs.Error) {
-	categoryProducts := []category_repository.CategoryProduct{}
+	categoryProducts := []*category_repository.CategoryProduct{}
+
 	rows, err := c.db.Query(getCategoryWithProduct)
 
 	if err != nil {
@@ -140,7 +141,7 @@ func (c *categoryPg) GetCategory() ([]*category_repository.CategoryProductMapped
 			return nil, errs.NewInternalServerError("something went wrong")
 		}
 
-		categoryProducts = append(categoryProducts, *categoryProduct.categoryWithProductToEntity())
+		categoryProducts = append(categoryProducts, categoryProduct.categoryWithProductToAggregate())
 	}
 
 	result := category_repository.CategoryProductMapped{}
@@ -157,7 +158,7 @@ func (c *categoryPg) UpdateCategory(categoryPayLoad *entity.Category) (*dto.Upda
 
 	row := tx.QueryRow(updateCategoryById, categoryPayLoad.Id, categoryPayLoad.Type)
 
-	categoryUpdate :=  dto.UpdateCategoryResponse{}
+	categoryUpdate := dto.UpdateCategoryResponse{}
 
 	err = row.Scan(
 		&categoryUpdate.Id,
@@ -183,7 +184,7 @@ func (c *categoryPg) UpdateCategory(categoryPayLoad *entity.Category) (*dto.Upda
 
 func (c *categoryPg) CheckCategoryId(categoryId int) (*entity.Category, errs.Error) {
 	category := entity.Category{}
-	
+
 	row := c.db.QueryRow(checkCategoryId, categoryId)
 	err := row.Scan(&category.Id, &category.Type, &category.SoldProductAmount)
 

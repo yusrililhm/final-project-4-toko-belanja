@@ -21,7 +21,7 @@ type categoryWithProduct struct {
 	ProductUpdatedAt          sql.NullTime
 }
 
-func (c *categoryWithProduct) categoryWithProductToEntity() *category_repository.CategoryProduct {
+func (c *categoryWithProduct) categoryWithProductToAggregate() *category_repository.CategoryProduct {
 	return &category_repository.CategoryProduct{
 		Category: entity.Category{
 			Id:                c.CategoryId,
@@ -31,12 +31,13 @@ func (c *categoryWithProduct) categoryWithProductToEntity() *category_repository
 			UpdatedAt:         c.CategoryUpdatedAt,
 		},
 		Product: entity.Product{
-			Id:        int(c.ProductId.Int64),
-			Title:     c.ProductTitle.String,
-			Price:     uint(c.ProductPrice.Int64),
-			Stock:     uint(c.ProductStock.Int64),
-			CreatedAt: c.ProductCreatedAt.Time,
-			UpdatedAt: c.ProductUpdatedAt.Time,
+			Id:         int(c.ProductId.Int64),
+			Title:      c.ProductTitle.String,
+			Price:      uint(c.ProductPrice.Int64),
+			Stock:      uint(c.ProductStock.Int64),
+			CategoryId: c.CategoryId,
+			CreatedAt:  c.ProductCreatedAt.Time,
+			UpdatedAt:  c.ProductUpdatedAt.Time,
 		},
 	}
 }
